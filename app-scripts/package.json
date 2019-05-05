@@ -1,0 +1,21 @@
+{
+    "name": "app-scripts",
+    "version": "1.0.0",
+    "description": "Associated scripts for podcast-radio",
+    "main": "index.js",
+    "scripts": {
+        "test": "npm run test"
+    },
+    "keywords": [
+        "scripts",
+        "database",
+        "db"
+    ],
+    "author": "drspacemanphd",
+    "license": "ISC",
+    "dependencies": {
+        "aws-sdk": "^2.445.0",
+        "dotenv": "^7.0.0",
+        "dotenv-flow": "^0.4.0"
+    }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "nyt-scraper",
+  "version": "1.0.0",
+  "description": "Scraper Micorservice for NYT Podcasts, including The Daily",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "npm run test",
+    "development": "NODE_ENV=development node index.js"
+  },
+  "keywords": [
+    "NYT",
+    "New",
+    "York",
+    "Times",
+    "podcast"
+  ],
+  "author": "drspacemanphd",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.446.0",
+    "cheerio": "^1.0.0-rc.3",
+    "dotenv": "^7.0.0",
+    "dotenv-flow": "^0.4.0",
+    "moment": "^2.24.0",
+    "nightmare": "^3.0.2",
+    "node-fetch": "^2.4.1",
+    "xml2js": "^0.4.19"
+  }
+}
