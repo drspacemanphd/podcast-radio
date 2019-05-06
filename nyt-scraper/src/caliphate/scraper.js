@@ -22,7 +22,7 @@ const scrape = async (index) => {
             .then(episode => {
                 if (episode) return saveNewEpisode(episode);
                 else {
-                    console.log('***** NO NEW EPISODES OF THE DAILY *****');
+                    console.log('***** NO NEW EPISODES OF CALIPHATE *****');
                     resolve(null);
                 }
             })
@@ -30,7 +30,7 @@ const scrape = async (index) => {
                 resolve(episode);
             })
             .catch((err) => {
-                console.error('***** THE DAILY SCRAPE FAILED *****', err)
+                console.error('***** CALIPHATE SCRAPE FAILED *****', err)
                 reject(err);
             });
 
@@ -42,7 +42,7 @@ const getLatestRSSEntry = async (index) => {
 
     return new Promise((resolve, reject) => {
 
-        fetch(process.env.THE_DAILY_RSS_URL)
+        fetch(process.env.CALIPHATE_RSS_URL)
             .then((res) => {
                 res.text()
                     .then(xml => {
@@ -53,7 +53,7 @@ const getLatestRSSEntry = async (index) => {
                     });
             })
             .catch((error) => {
-                console.error('***** THE DAILY SCRAPE FAILED *****', error)
+                console.error('***** CALIPHATE SCRAPE FAILED *****', error)
                 reject(error);
             });
 
@@ -65,26 +65,23 @@ const getLatestEpisodesFromDB = async () => {
 
     return new Promise((resolve, reject) => {
 
-        const date = moment().subtract(14, 'days');
-
         const params = {
             ExpressionAttributeValues: {
-                ':p': { 'S': 'The Daily' },
-                ':d': { 'S': date.format('YYYY-MM-DD') }
+                ':p': { 'S': 'Caliphate' },
             },
             IndexName: 'EPISODE_PUBLICATION_DATE',
-            KeyConditionExpression: 'Podcast = :p and PublicationDate > :d',
+            KeyConditionExpression: 'Podcast = :p',
             ProjectionExpression: 'EpisodeId, Title, Podcast, PublicationDate, Downloads, Link',
             TableName: process.env.EPISODE_TABLE_NAME
         }
 
         db.query(params, (err, result) => {
             if (err) {
-                console.log('***** QUERY FOR THE DAILY EPISODES FAILED *****')
+                console.log('***** QUERY FOR CALIPHATE EPISODES FAILED *****')
                 console.log('***** ERROR DUE TO: ' + err);
                 reject(err);
             } else {
-                console.log('***** QUERY FOR THE DAILY EPISODES SUCCEEDED *****')
+                console.log('***** QUERY FOR CALIPHATE EPISODES SUCCEEDED *****')
                 resolve(result);
             }
         });
@@ -102,7 +99,7 @@ const getNewEpisodes = (latestRssEntry, savedEpisodes) => {
         return {
             EpisodeId: latestRssEntry[0].guid[0]._,
             Title: latestRssEntry[0].title[0],
-            Podcast: 'The Daily',
+            Podcast: 'Caliphate',
             PublicationDate: moment(latestRssEntry[0].pubDate[0]).format('YYYY-MM-DD'),
             Downloads: '0',
             TempLink: latestRssEntry[0].enclosure[0]['$'].url,
@@ -134,11 +131,11 @@ const saveNewEpisode = async (episode) => {
 
         db.putItem(params, (err, result) => {
             if (err) {
-                console.log('***** FAILED TO SAVE NEW EPISODE OF THE DAILY *****')
+                console.log('***** FAILED TO SAVE NEW EPISODE OF CALIPHATE *****')
                 console.log('***** ERROR DUE TO: ' + err);
                 reject(err);
             } else {
-                console.log('***** SUCCESSFULLY SAVED NEW EPISODE OF THE DAILY *****')
+                console.log('***** SUCCESSFULLY SAVED NEW EPISODE OF CALIPHATE *****')
                 resolve(params.Item);
             }
         });
@@ -154,26 +151,32 @@ const getMp3 = async (key, url) => {
         // Initial fetch to circumvent redirects
         fetch(url)
             .then(res => {
-                if (!res.url) throw new Error("***** COULD NOT FIND REDIRECT URL FOR THE DAILY *****")
                 return res.url;
             })
             .then(redirect => {
 
-                const req = https.get(redirect, (res) => {
+                const httpParams = {
+                    timeout: 600000,
+                    headers: {
+                        'Content-Type': 'audio/mpeg'
+                    }
+                }
+
+                const req = https.get(redirect, httpParams, (res) => {
                     
                     s3.upload({
                         ACL: 'private',
-                        Bucket: process.env.THE_DAILY_BUCKET,
+                        Bucket: process.env.CALIPHATE_BUCKET,
                         Key: key,
                         Body: res,
                         ContentType: 'audio/mpeg'
                     }, (err, result) => {
                         if (err) {
-                            console.log('***** FAILED TO UPLOAD NEW EPISODE OF THE DAILY *****')
+                            console.log('***** FAILED TO UPLOAD NEW EPISODE OF CALIPHATE *****')
                             console.log('***** ERROR DUE TO: ' + err);
                             reject(err);
                         } else {
-                            console.log('***** SUCCESSFULLY UPLOADED NEW EPISODE OF THE DAILY *****')
+                            console.log('***** SUCCESSFULLY UPLOADED NEW EPISODE OF CALIPHATE *****')
                             resolve(result);
                         }
                     });
@@ -184,7 +187,7 @@ const getMp3 = async (key, url) => {
 
             })
             .catch(err => {
-                console.log('***** FAILED TO FETCH NEW EPISODE OF THE DAILY *****')
+                console.log('***** FAILED TO FETCH NEW EPISODE OF CALIPHATE *****')
                 console.log('***** ERROR DUE TO: ' + err);
                 reject(err);
             });

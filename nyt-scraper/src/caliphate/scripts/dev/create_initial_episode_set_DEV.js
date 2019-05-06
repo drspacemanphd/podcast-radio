@@ -4,7 +4,7 @@ require('dotenv-flow').config({
 const scraper = require('../../scraper');
 
 const loadInitialEpisodes = async () => {
-    for (let i = 7; i < 14; i++) {
+    for (let i = 10; i < 11; i++) {
         await scraper.scrape(i);
     }
     console.log("SUCCESS");
