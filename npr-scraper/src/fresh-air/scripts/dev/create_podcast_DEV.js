@@ -3,6 +3,6 @@ require('dotenv-flow').config({
 });
 const script = require('../create_podcast_template');
 
-script(process.env.PODCAST_TABLE_NAME, process.env.CALIPHATE_BUCKET);
+script(process.env.PODCAST_TABLE_NAME, process.env.FRESH_AIR_BUCKET);
 
 

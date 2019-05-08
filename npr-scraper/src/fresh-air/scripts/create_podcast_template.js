@@ -10,7 +10,7 @@ const createPodcast = async (TABLE_NAME, BUCKET_NAME) => {
             return savePodcastItem(TABLE_NAME, url);
         })
         .catch(err => {
-            console.log('***** FAILED TO CREATE THE DAILY PODCAST *****')
+            console.log('***** FAILED TO CREATE FRESH AIR PODCAST *****')
             console.log('***** FAILURE DUE TO: ' + err);
             reject(err);
         });
@@ -25,9 +25,9 @@ const savePodcastItem = async (TABLE_NAME, imageUrl) => {
         const params = {
             TableName: TABLE_NAME,
             Item: {
-                'PodcastName': { S: 'The Daily' },
-                'PodcastAuthor': { S: 'The New York Times' },
-                'PodcastCategory': { S: 'News & Politics' },
+                'PodcastName': { S: 'Fresh Air' },
+                'PodcastAuthor': { S: 'NPR' },
+                'PodcastCategory': { S: 'Society & Culture' },
                 'PodcastDownloads': { N: '0' },
                 "PodcastImage": { S: imageUrl }
             }
@@ -35,11 +35,11 @@ const savePodcastItem = async (TABLE_NAME, imageUrl) => {
 
         db.putItem(params, (err, result) => {
             if (err) {
-                console.log('***** FAILED TO SAVE THE DAILY PODCAST ITEM IN DB *****');
+                console.log('***** FAILED TO SAVE FRESH AIR PODCAST ITEM IN DB *****');
                 console.log('***** FAILURE DUE TO: ' + err);
                 reject(err);
             } else {
-                console.log('***** THE DAILY PODCAST ITEM SUCCESSFULLY SAVED *****')
+                console.log('***** FRESH AIR PODCAST ITEM SUCCESSFULLY SAVED *****')
                 console.log(JSON.stringify(result));
                 resolve(result);
             }
@@ -55,21 +55,21 @@ const getPodcastImage = async (BUCKET_NAME) => {
 
     return new Promise((resolve, reject) => {
 
-        const req = https.get('https://is2-ssl.mzstatic.com/image/thumb/Music113/v4/f5/78/c7/f578c7e9-10d9-ef82-f8c0-708f7f1aa2ca/source/600x600bb.jpg', (res) => {
+        const req = https.get('https://is5-ssl.mzstatic.com/image/thumb/Music113/v4/a5/3b/9c/a53b9c38-9cd6-51d9-099e-38ae77c39caa/source/600x600bb.jpg', (res) => {
 
             s3.upload({
                 ACL: 'private',
                 Bucket: BUCKET_NAME,
-                Key: 'TheDaily.jpg',
+                Key: 'FreshAirImage.jpg',
                 Body: res,
                 ContentType: 'image/jpeg'
             }, (err, result) => {
                 if (err) {
-                    console.log('***** FAILED TO UPLOAD IMAGE OF THE DAILY *****');
+                    console.log('***** FAILED TO UPLOAD IMAGE OF FRESH AIR *****');
                     console.log('***** ERROR DUE TO: ' + err);
                     reject(err);
                 } else {
-                    console.log('***** SUCCESSFULLY UPLOADED IMAGE OF THE DAILY *****');
+                    console.log('***** SUCCESSFULLY UPLOADED IMAGE OF FRESH AIR *****');
                     console.log(result);
                     resolve(result.Location);
                 }

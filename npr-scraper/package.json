@@ -1,0 +1,23 @@
+{
+  "name": "npr-scraper",
+  "version": "1.0.0",
+  "description": "A scraper service for NPR podcasts",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "keywords": [
+    "NPR",
+    "podcast",
+    "News",
+    "Politics"
+  ],
+  "author": "drspacemanphd",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.451.0",
+    "dotenv-flow": "^0.4.0",
+    "node-fetch": "^2.5.0",
+    "xml2js": "^0.4.19"
+  }
+}
