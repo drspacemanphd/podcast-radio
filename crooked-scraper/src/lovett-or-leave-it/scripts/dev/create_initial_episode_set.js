@@ -12,12 +12,12 @@ const scrape = async () => {
         for (let i = 10; i < 20; i++) {
 
             let params = {
-                podcastName: 'Pod Save the World',
+                podcastName: 'Lovett or Leave It',
                 tableName: process.env.EPISODE_TABLE_NAME,
-                rssUrl: process.env.POD_SAVE_THE_WORLD_RSS_URL,
+                rssUrl: process.env.LOVETT_OR_LEAVE_IT_RSS_URL,
                 retrievalWindowInDays: 600,
                 startIndex: i,
-                bucketName: process.env.POD_SAVE_THE_WORLD_BUCKET
+                bucketName: process.env.LOVETT_OR_LEAVE_IT_BUCKET
             }
 
             results.push(scraper.scrape(params));
