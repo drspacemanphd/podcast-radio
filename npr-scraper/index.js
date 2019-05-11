@@ -14,5 +14,3 @@ const handler = async (event, context, callback) => {
 };
 
 exports.handler = handler;
-
-handler();
