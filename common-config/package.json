@@ -1,0 +1,22 @@
+{
+  "name": "common-config",
+  "version": "1.0.0",
+  "description": "a package of common components to use in various microservices",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "keywords": [
+    "common",
+    "config",
+    "podcast-radio"
+  ],
+  "author": "drspacemanphd",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.452.0",
+    "moment": "^2.24.0",
+    "node-fetch": "^2.5.0",
+    "xml2js": "^0.4.19"
+  }
+}

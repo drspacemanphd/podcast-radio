@@ -1,14 +1,14 @@
 const scraper = require('../scraping-components/PodcastScraper');
 
-const scrape = async() => {
+const scrape = async () => {
 
     let params = {
-        podcastName: 'The Daily',
+        podcastName: 'Fresh Air',
         tableName: process.env.EPISODE_TABLE_NAME,
-        rssUrl: process.env.THE_DAILY_RSS_URL,
+        rssUrl: process.env.FRESH_AIR_RSS_URL,
         retrievalWindowInDays: 7,
         startIndex: 0,
-        bucketName: process.env.THE_DAILY_BUCKET
+        bucketName: process.env.FRESH_AIR_BUCKET
     }
 
     return scraper.scrape(params);
@@ -18,4 +18,3 @@ const scrape = async() => {
 module.exports = {
     scrape: scrape
 }
-
