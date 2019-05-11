@@ -8,15 +8,12 @@ const getLatestEpisodesFromDB = async (args) => {
 
     return new Promise((resolve, reject) => {
 
-        const date = moment().subtract(args.retrievalWindowInDays, 'days');
-
         const params = {
             ExpressionAttributeValues: {
                 ':p': { 'S': args.podcastName },
-                ':d': { 'S': date.format('YYYY-MM-DD') }
             },
             IndexName: 'EPISODE_PUBLICATION_DATE',
-            KeyConditionExpression: 'Podcast = :p and PublicationDate > :d',
+            KeyConditionExpression: 'Podcast = :p',
             ProjectionExpression: 'EpisodeId, Title, Podcast, PublicationDate, Downloads, Link',
             TableName: args.tableName
         }

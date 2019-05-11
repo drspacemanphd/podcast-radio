@@ -10,7 +10,7 @@ const createPodcast = async (TABLE_NAME, BUCKET_NAME) => {
             return savePodcastItem(TABLE_NAME, url);
         })
         .catch(err => {
-            console.log('***** FAILED TO CREATE FRESH AIR PODCAST *****')
+            console.log('***** FAILED TO CREATE NPR POLITICS PODCAST *****')
             console.log('***** FAILURE DUE TO: ' + err);
             reject(err);
         });
@@ -25,9 +25,9 @@ const savePodcastItem = async (TABLE_NAME, imageUrl) => {
         const params = {
             TableName: TABLE_NAME,
             Item: {
-                'PodcastName': { S: 'Fresh Air' },
+                'PodcastName': { S: 'The NPR Politics Podcast' },
                 'PodcastAuthor': { S: 'NPR' },
-                'PodcastCategory': { S: 'Society & Culture' },
+                'PodcastCategory': { S: 'News & Politics' },
                 'PodcastDownloads': { N: '0' },
                 "PodcastImage": { S: imageUrl }
             }
@@ -35,11 +35,11 @@ const savePodcastItem = async (TABLE_NAME, imageUrl) => {
 
         db.putItem(params, (err, result) => {
             if (err) {
-                console.log('***** FAILED TO SAVE FRESH AIR PODCAST ITEM IN DB *****');
+                console.log('***** FAILED TO SAVE NPR POLITICS PODCAST ITEM IN DB *****');
                 console.log('***** FAILURE DUE TO: ' + err);
                 reject(err);
             } else {
-                console.log('***** FRESH AIR PODCAST ITEM SUCCESSFULLY SAVED *****')
+                console.log('***** NPR POLITICS PODCAST ITEM SUCCESSFULLY SAVED *****')
                 console.log(JSON.stringify(result));
                 resolve(result);
             }
@@ -55,21 +55,21 @@ const getPodcastImage = async (BUCKET_NAME) => {
 
     return new Promise((resolve, reject) => {
 
-        const req = https.get(process.env.FRESH_AIR_IMAGE_URL, (res) => {
+        const req = https.get(process.env.NPR_POLITICS_IMAGE_URL, (res) => {
 
             s3.upload({
                 ACL: 'private',
                 Bucket: BUCKET_NAME,
-                Key: 'FreshAirImage.jpg',
+                Key: 'NPRPoliticsImage.jpg',
                 Body: res,
                 ContentType: 'image/jpeg'
             }, (err, result) => {
                 if (err) {
-                    console.log('***** FAILED TO UPLOAD IMAGE OF FRESH AIR *****');
+                    console.log('***** FAILED TO UPLOAD IMAGE OF NPR POLITICS *****');
                     console.log('***** ERROR DUE TO: ' + err);
                     reject(err);
                 } else {
-                    console.log('***** SUCCESSFULLY UPLOADED IMAGE OF FRESH AIR *****');
+                    console.log('***** SUCCESSFULLY UPLOADED IMAGE OF NPR POLITICS *****');
                     console.log(result);
                     resolve(result.Location);
                 }
