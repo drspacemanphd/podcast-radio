@@ -1,0 +1,24 @@
+{
+  "name": "crooked-scraper",
+  "version": "1.0.0",
+  "description": "A microservice to scrape for podcasts published by Crooked Media",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Crooked",
+    "Pod",
+    "Save"
+  ],
+  "author": "drspacemanphd",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.453.0",
+    "dotenv-flow": "^0.4.0",
+    "moment": "^2.24.0",
+    "node-fetch": "^2.5.0",
+    "xml2js": "^0.4.19",
+    "common-config": "../common-config/common-config-1.0.0.tgz"
+  }
+}
