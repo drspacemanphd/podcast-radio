@@ -35,6 +35,7 @@ const getLatestEpisodesFromDB = async (args) => {
 const saveNewEpisode = async (episode, args) => {
 
     let key = episode.Title + '.mp3';
+    key = key.replace('/', 'and');
     let mp3 = await uploadMp3(episode.Link, key, args.bucketName, args.podcastName);
 
     return new Promise((resolve, reject) => {
