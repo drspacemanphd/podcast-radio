@@ -20,7 +20,7 @@ const scrapePodcastForNewEpisodes = async (params) => {
             .then(episode => {
                 if (episode) return podcastEpisodeDao.saveNewEpisode(episode, params);
                 else {
-                    console.log('***** NO NEW EPISODES OF ' + params.podcastName + ' *****');
+                    console.log(`***** NO NEW EPISODES OF ${params.podcastName} *****`);
                     resolve(null);
                 }
             })
@@ -28,7 +28,7 @@ const scrapePodcastForNewEpisodes = async (params) => {
                 resolve(episode);
             })
             .catch((err) => {
-                console.error('***** SCRAPE OF ' + params.podcastName + ' FAILED *****', err)
+                console.error(`***** SCRAPE OF ${params.podcastName} FAILED *****`, err)
                 reject(err);
             });
 

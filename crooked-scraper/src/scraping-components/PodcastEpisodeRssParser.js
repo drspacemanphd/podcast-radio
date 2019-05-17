@@ -16,7 +16,7 @@ const getLatestRSSEntry = async (params) => {
                     });
             })
             .catch((error) => {
-                console.error('***** XML PARSING FOR EPISODES OF ' + params.podcastName + ' FAILED *****', error)
+                console.error(`***** XML PARSING FOR EPISODES OF ${params.podcastName} FAILED *****`, error)
                 reject(error);
             });
 

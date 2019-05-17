@@ -130,8 +130,8 @@ const createEpisodeTable = async (TABLE_NAME) => {
 
     db.createTable(params, (err, result) => {
         if (err) {
-            console.log('***** TABLE CREATION FAILED *****');
-            console.log('***** FAILURE DUE TO: ' + err);
+            console.log(`***** TABLE CREATION FAILED *****`);
+            console.log(`***** FAILURE DUE TO: ${err}`);
             throw err;
         } else {
             console.log('***** TABLE SUCCESSFULLY CREATED *****')

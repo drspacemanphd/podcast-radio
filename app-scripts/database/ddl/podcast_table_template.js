@@ -55,10 +55,7 @@ const createPodcastTable = async (TABLE_NAME) => {
                     }
                 ],
                 Projection: {
-                    ProjectionType: 'INCLUDE',
-                    NonKeyAttributes: [
-                        'PodcastAuthor'
-                    ]
+                    ProjectionType: 'ALL',
                 }
             },
             {
@@ -74,10 +71,7 @@ const createPodcastTable = async (TABLE_NAME) => {
                     }
                 ],
                 Projection: {
-                    ProjectionType: 'INCLUDE',
-                    NonKeyAttributes: [
-                        'PodcastAuthor'
-                    ]
+                    ProjectionType: 'ALL',
                 }
             }
         ],
@@ -95,11 +89,7 @@ const createPodcastTable = async (TABLE_NAME) => {
                     }
                 ],
                 Projection: {
-                    ProjectionType: 'INCLUDE',
-                    NonKeyAttributes: [
-                        'PodcastName',
-                        'PodcastAuthor'
-                    ]
+                    ProjectionType: 'ALL',
                 },
                 ProvisionedThroughput: {
                     ReadCapacityUnits: 1,
@@ -114,8 +104,8 @@ const createPodcastTable = async (TABLE_NAME) => {
 
     db.createTable(params, (err, result) => {
         if (err) {
-            console.log('***** TABLE CREATION FAILED *****');
-            console.log('***** FAILURE DUE TO: ' + err);
+            console.log(`***** TABLE CREATION FAILED *****`);
+            console.log(`***** FAILURE DUE TO: ${err}`);
             throw err;
         } else {
             console.log('***** TABLE SUCCESSFULLY CREATED *****')

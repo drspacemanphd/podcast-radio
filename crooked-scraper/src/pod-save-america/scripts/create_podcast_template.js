@@ -10,8 +10,8 @@ const createPodcast = async (TABLE_NAME, BUCKET_NAME) => {
             return savePodcastItem(TABLE_NAME, url);
         })
         .catch(err => {
-            console.log('***** FAILED TO CREATE POD SAVE AMERICA PODCAST *****')
-            console.log('***** FAILURE DUE TO: ' + err);
+            console.log(`***** FAILED TO CREATE POD SAVE AMERICA PODCAST *****`)
+            console.log(`***** FAILURE DUE TO: ${err} *****`);
             reject(err);
         });
 
@@ -35,8 +35,8 @@ const savePodcastItem = async (TABLE_NAME, imageUrl) => {
 
         db.putItem(params, (err, result) => {
             if (err) {
-                console.log('***** FAILED TO SAVE POD SAVE AMERICA PODCAST ITEM IN DB *****');
-                console.log('***** FAILURE DUE TO: ' + err);
+                console.log(`***** FAILED TO SAVE POD SAVE AMERICA PODCAST ITEM IN DB *****`);
+                console.log(`***** FAILURE DUE TO: ${err} *****`);
                 reject(err);
             } else {
                 console.log('***** POD SAVE AMERICA PODCAST ITEM SUCCESSFULLY SAVED *****')
@@ -65,8 +65,8 @@ const getPodcastImage = async (BUCKET_NAME) => {
                 ContentType: 'image/jpeg'
             }, (err, result) => {
                 if (err) {
-                    console.log('***** FAILED TO UPLOAD IMAGE OF POD SAVE AMERICA *****');
-                    console.log('***** ERROR DUE TO: ' + err);
+                    console.log(`***** FAILED TO UPLOAD IMAGE OF POD SAVE AMERICA *****`);
+                    console.log(`***** ERROR DUE TO: ${err} *****`);
                     reject(err);
                 } else {
                     console.log('***** SUCCESSFULLY UPLOADED IMAGE OF POD SAVE AMERICA *****');

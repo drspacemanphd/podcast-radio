@@ -10,8 +10,8 @@ const createPodcast = async (TABLE_NAME, BUCKET_NAME) => {
             return savePodcastItem(TABLE_NAME, url);
         })
         .catch(err => {
-            console.log('***** FAILED TO CREATE LOVETT OR LEAVE IT PODCAST *****')
-            console.log('***** FAILURE DUE TO: ' + err);
+            console.log(`***** FAILED TO CREATE LOVETT OR LEAVE IT PODCAST *****`)
+            console.log(`***** FAILURE DUE TO: ${err} *****`);
             reject(err);
         });
 
@@ -35,11 +35,11 @@ const savePodcastItem = async (TABLE_NAME, imageUrl) => {
 
         db.putItem(params, (err, result) => {
             if (err) {
-                console.log('***** FAILED TO SAVE LOVETT OR LEAVE IT PODCAST ITEM IN DB *****');
-                console.log('***** FAILURE DUE TO: ' + err);
+                console.log(`***** FAILED TO SAVE LOVETT OR LEAVE IT PODCAST ITEM IN DB *****`);
+                console.log(`***** FAILURE DUE TO: ${err} *****`);
                 reject(err);
             } else {
-                console.log('***** LOVETT OR LEAVE IT PODCAST ITEM SUCCESSFULLY SAVED *****')
+                console.log(`***** LOVETT OR LEAVE IT PODCAST ITEM SUCCESSFULLY SAVED *****`)
                 console.log(JSON.stringify(result));
                 resolve(result);
             }
@@ -66,7 +66,7 @@ const getPodcastImage = async (BUCKET_NAME) => {
             }, (err, result) => {
                 if (err) {
                     console.log('***** FAILED TO UPLOAD IMAGE OF LOVETT OR LEAVE IT *****');
-                    console.log('***** ERROR DUE TO: ' + err);
+                    console.log(`***** ERROR DUE TO: ${err} *****`);
                     reject(err);
                 } else {
                     console.log('***** SUCCESSFULLY UPLOADED IMAGE OF LOVETT OR LEAVE IT *****');

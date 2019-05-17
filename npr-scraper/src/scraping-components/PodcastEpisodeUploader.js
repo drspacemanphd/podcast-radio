@@ -26,11 +26,11 @@ const uploadEpisode = async (url, bucketKey, bucketName, podcastName) => {
                         ContentType: 'audio/mpeg'
                     }, (err, result) => {
                         if (err) {
-                            console.log('***** FAILED TO UPLOAD NEW EPISODE OF ' + podcastName + ' *****')
-                            console.log('***** ERROR DUE TO: ' + err);
+                            console.log(`***** FAILED TO UPLOAD NEW EPISODE OF ${podcastName} *****`)
+                            console.log(`***** ERROR DUE TO: ${err} *****`);
                             reject(err);
                         } else {
-                            console.log('***** SUCCESSFULLY UPLOADED NEW EPISODE OF ' + podcastName + ' *****')
+                            console.log(`***** SUCCESSFULLY UPLOADED NEW EPISODE OF ${podcastName} *****`)
                             resolve(result);
                         }
                     });
@@ -41,8 +41,8 @@ const uploadEpisode = async (url, bucketKey, bucketName, podcastName) => {
 
             })
             .catch(err => {
-                console.log('***** FAILED TO FETCH NEW EPISODE OF ' + podcastName + ' *****')
-                console.log('***** ERROR DUE TO: ' + err);
+                console.log(`***** FAILED TO FETCH NEW EPISODE OF ${podcastName} *****`)
+                console.log(`***** ERROR DUE TO: ${err} *****`);
                 reject(err);
             });
 

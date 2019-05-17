@@ -11,7 +11,7 @@ const createPodcast = async (TABLE_NAME, BUCKET_NAME) => {
         })
         .catch(err => {
             console.log('***** FAILED TO CREATE CALIPHATE PODCAST *****')
-            console.log('***** FAILURE DUE TO: ' + err);
+            console.log(`***** FAILURE DUE TO: ${err} *****`);
             reject(err);
         });
 
@@ -36,7 +36,7 @@ const savePodcastItem = async (TABLE_NAME, imageUrl) => {
         db.putItem(params, (err, result) => {
             if (err) {
                 console.log('***** FAILED TO SAVE CALIPHATE PODCAST ITEM IN DB *****');
-                console.log('***** FAILURE DUE TO: ' + err);
+                console.log(`***** FAILURE DUE TO: ${err} *****`);
                 reject(err);
             } else {
                 console.log('***** CALIPHATE PODCAST ITEM SUCCESSFULLY SAVED *****')
@@ -66,7 +66,7 @@ const getPodcastImage = async (BUCKET_NAME) => {
             }, (err, result) => {
                 if (err) {
                     console.log('***** FAILED TO UPLOAD IMAGE OF CALIPHATE *****');
-                    console.log('***** ERROR DUE TO: ' + err);
+                    console.log(`***** ERROR DUE TO: ${err} *****`);
                     reject(err);
                 } else {
                     console.log('***** SUCCESSFULLY UPLOADED IMAGE OF CALIPHATE *****');

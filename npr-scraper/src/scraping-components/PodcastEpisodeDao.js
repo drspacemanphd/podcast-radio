@@ -20,11 +20,11 @@ const getLatestEpisodesFromDB = async (args) => {
 
         db.query(params, (err, result) => {
             if (err) {
-                console.log('***** QUERY FOR ' + args.podcastName + ' EPISODES FAILED *****')
-                console.log('***** ERROR DUE TO: ' + err);
+                console.log(`***** QUERY FOR ${args.podcastName} EPISODES FAILED *****`)
+                console.log(`***** ERROR DUE TO: ${err} *****`);
                 reject(err);
             } else {
-                console.log('***** QUERY FOR ' + args.podcastName + ' EPISODES SUCCEEDED *****')
+                console.log(`***** QUERY FOR ${args.podcastName} EPISODES SUCCEEDED *****`)
                 resolve(result);
             }
         });
@@ -55,11 +55,11 @@ const saveNewEpisode = async (episode, args) => {
 
         db.putItem(params, (err, result) => {
             if (err) {
-                console.log('***** FAILED TO SAVE NEW EPISODE OF ' + args.podcastName + ' *****')
-                console.log('***** ERROR DUE TO: ' + err);
+                console.log(`***** FAILED TO SAVE NEW EPISODE OF ${args.podcastName} *****`)
+                console.log(`***** ERROR DUE TO: ${err}`);
                 reject(err);
             } else {
-                console.log('***** SUCCESSFULLY SAVED NEW EPISODE OF ' + args.podcastName + ' *****')
+                console.log(`***** SUCCESSFULLY SAVED NEW EPISODE OF ${args.podcastName} *****`)
                 resolve(result);
             }
         });
