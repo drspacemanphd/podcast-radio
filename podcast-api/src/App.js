@@ -1,6 +1,3 @@
-process.env.NODE_ENV = 'development';
-require('dotenv-flow').config();
-
 const express = require('express');
 const HttpResponseBuilder = require('common-config/src/common-model/HttpResponse');
 const service = require('./Service');
