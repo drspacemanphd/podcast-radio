@@ -4,7 +4,7 @@ const aws = require('aws-sdk');
 aws.config.update({ region: 'us-east-1' });
 const db = new aws.DynamoDB();
 
-const getLatestEpisodesFromDB = async (args) => {
+const getLatestEpisodesFromDB = (args) => {
 
     return new Promise((resolve, reject) => {
 

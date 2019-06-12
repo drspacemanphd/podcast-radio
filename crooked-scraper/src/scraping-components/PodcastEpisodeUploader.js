@@ -4,7 +4,7 @@ const aws = require('aws-sdk');
 aws.config.update({ region: 'us-east-1' });
 const s3 = new aws.S3();
 
-const uploadEpisode = async (url, bucketKey, bucketName, podcastName) => {
+const uploadEpisode = (url, bucketKey, bucketName, podcastName) => {
 
     return new Promise((resolve, reject) => {
 

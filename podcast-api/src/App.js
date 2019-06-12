@@ -34,7 +34,14 @@ app.get('/podcast/all', (req, res) => {
 app.post('/podcast/category', (req, res) => {
     service.getPodcastsByCategory(req.body.podcastCategory)
         .then(result => {
-            res.json(result);
+            response = new HttpResponseBuilder()
+                .url(req.url)
+                .status(200)
+                .payload(result)
+                .timestamp(new Date())
+                .build();
+
+            res.json(response);
         })
         .catch(err => {
             console.log(err);
@@ -49,7 +56,14 @@ app.post('/podcast/category', (req, res) => {
 app.get('/podcast/:podcast/episodes', (req, res) => {
     service.getEpisodesByPodcastName(req.params.podcast)
         .then(result => {
-            res.json(result);
+            response = new HttpResponseBuilder()
+                .url(req.url)
+                .status(200)
+                .payload(result)
+                .timestamp(new Date())
+                .build();
+
+            res.json(response);
         })
         .catch(err => {
             console.log(err);

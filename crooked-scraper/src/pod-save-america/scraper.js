@@ -11,7 +11,9 @@ const scrape = async () => {
         bucketName: process.env.POD_SAVE_AMERICA_BUCKET
     }
 
-    return scraper.scrape(params);
+    let results = await scraper.scrape(params);
+
+    return results;
 
 }
 

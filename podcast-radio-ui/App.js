@@ -25,7 +25,7 @@ const dict = {
 
 I18n.putVocabularies(dict);
 
-class App extends React.Component {
+export default class App extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -38,7 +38,7 @@ class App extends React.Component {
 
 }
 
-export default withAuthenticator(App, false, [
-  <CustomSignIn />,
-  <ForgotPassword />,
-]);
+// export default withAuthenticator(App, false, [
+//   <CustomSignIn />,
+//   <ForgotPassword />,
+// ]);

@@ -3,21 +3,18 @@ const aws = require('aws-sdk');
 
 aws.config.update({ region: 'us-east-1' });
 
-const createPodcast = async (TABLE_NAME, BUCKET_NAME) => {
+const createPodcast = (TABLE_NAME, BUCKET_NAME) => {
 
     return getPodcastImage(BUCKET_NAME)
-        .then(url => {
-            return savePodcastItem(TABLE_NAME, url);
-        })
+        .then(url => savePodcastItem(TABLE_NAME, url))
         .catch(err => {
             console.log('***** FAILED TO CREATE POD SAVE THE WORLD PODCAST *****')
             console.log(`***** FAILURE DUE TO: ${err} *****`);
-            reject(err);
         });
 
 }
 
-const savePodcastItem = async (TABLE_NAME, imageUrl) => {
+const savePodcastItem = (TABLE_NAME, imageUrl) => {
 
     return new Promise((resolve, reject) => {
 
@@ -49,7 +46,7 @@ const savePodcastItem = async (TABLE_NAME, imageUrl) => {
 
 }
 
-const getPodcastImage = async (BUCKET_NAME) => {
+const getPodcastImage = (BUCKET_NAME) => {
 
     const s3 = new aws.S3();
 

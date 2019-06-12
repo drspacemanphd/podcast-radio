@@ -6,7 +6,7 @@ const podcastEpisodeDao = require('./PodcastEpisodeDao');
  * 
  * @param { podcastName (String), tableName(String), rssUrl(String), retrievalWindowInDays(Number), startIndex(Number), bucketName(string)} params
  */
-const scrapePodcastForNewEpisodes = async (params) => {
+const scrapePodcastForNewEpisodes = (params) => {
 
     return new Promise((resolve, reject) => {
         

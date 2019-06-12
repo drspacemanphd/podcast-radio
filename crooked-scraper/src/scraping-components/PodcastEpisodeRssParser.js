@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 const xml2js = require('xml2js');
 
-const getLatestRSSEntry = async (params) => {
+const getLatestRSSEntry = (params) => {
 
     return new Promise((resolve, reject) => {
 

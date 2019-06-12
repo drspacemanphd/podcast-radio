@@ -1,8 +1,10 @@
 import React from 'react';
-import { View, StyleSheet, ActivityIndicator, Dimensions, Picker } from 'react-native';
+import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import PodcastListView from './views/PodcastListView';
+import { createStackNavigator, createAppContainer } from 'react-navigation';
+import PodcastView from './views/PodcastView';
 
-export default class Home extends React.Component {
+class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -33,13 +35,7 @@ export default class Home extends React.Component {
         } else {
             return (
                 <View style={styles.container}>
-                    <Picker
-                        selectedValue='Test One'
-                        style={{ height: 50, width: 100 }}>
-                        <Picker.Item label="Test One" value="Test One" />
-                        <Picker.Item label="Test Two" value="Test Two" />
-                    </Picker>
-                    <PodcastListView podcasts={this.state.podcasts} />
+                    <PodcastListView podcasts={this.state.podcasts} navigation={this.props.navigation} />
                 </View>
             );
         }
@@ -49,15 +45,32 @@ export default class Home extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
-        backgroundColor: '#F0EAD6',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
         alignItems: 'center',
-        justifyContent: 'center',
+        width: '100%',
+        height: '100%',
+        backgroundColor: '#fffcf4',
+    },
+    headerContainerStyle: {
+        backgroundColor: '#003366'
     },
     loader: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
     },
-})
+});
+
+const appStack = createStackNavigator(
+    {
+        Home: Home,
+        PodcastView: PodcastView
+    },
+    {
+        initialRouteName: 'Home'
+    }
+);
+
+export default createAppContainer(appStack);
+

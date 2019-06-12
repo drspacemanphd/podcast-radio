@@ -3,7 +3,7 @@ require('dotenv-flow').config();
 
 const scraper = require('../../../scraping-components/PodcastScraper');
 
-const scrape = () => {
+const scrape = async () => {
 
     return new Promise((resolve, reject) => {
 
@@ -12,12 +12,12 @@ const scrape = () => {
         for (let i = 0; i < 10; i++) {
 
             let params = {
-                podcastName: 'Lovett or Leave It',
+                podcastName: 'The Daily',
                 tableName: process.env.EPISODE_TABLE_NAME,
-                rssUrl: process.env.LOVETT_OR_LEAVE_IT_RSS_URL,
+                rssUrl: process.env.THE_DAILY_RSS_URL,
                 retrievalWindowInDays: 600,
                 startIndex: i,
-                bucketName: process.env.LOVETT_OR_LEAVE_IT_BUCKET
+                bucketName: process.env.THE_DAILY_BUCKET
             }
 
             results.push(scraper.scrape(params));
@@ -25,7 +25,7 @@ const scrape = () => {
         }
 
         Promise.all(results)
-            .then(r => resolve(r))
+            .then(r => resolve(results))
             .catch(err => reject(err));
 
     });

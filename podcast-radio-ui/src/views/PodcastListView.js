@@ -1,7 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, FlatList, Image } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { ListItem } from 'react-native-elements';
-import PodcastItem from './PodcastItem';
 
 export default class PodcastListView extends React.Component {
     constructor(props) {
@@ -19,7 +18,12 @@ export default class PodcastListView extends React.Component {
                                 title={p.PodcastName}
                                 subtitle={p.PodcastAuthor}
                                 leftAvatar={{ source: { uri: p.PodcastImage }}}
-                                onPress={() => console.log(p.PodcastAuthor)}
+                                onPress={() => {
+                                    this.props.navigation.navigate('PodcastView', {
+                                        podcast: p
+                                    });
+                                }}
+                                containerStyle={styles.item}
                             />
                         );
                     })
@@ -33,14 +37,14 @@ export default class PodcastListView extends React.Component {
 const styles = StyleSheet.create({
     listContainer: {
         flex: 1,
-        maxHeight: '75%',
-        width: '90%',
+        maxHeight: '100%',
+        width: '100%',
         justifyContent: 'flex-start',
-        backgroundColor: 'white'
+        backgroundColor: '#fffcf4'
     },
-    list: {
-        flex: 1,
-        flexDirection: 'row',
-        width: '80%',
+    item: {
+        backgroundColor: '#fffcf4',
+        borderBottomColor: 'black',
+        borderBottomWidth: 1
     }
 });
