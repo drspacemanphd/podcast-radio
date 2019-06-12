@@ -11,7 +11,9 @@ const scrape = async () => {
         bucketName: process.env.NPR_POLITICS_BUCKET
     }
 
-    return scraper.scrape(params);
+    let results = await scraper.scrape(params);
+
+    return results;
 
 }
 
