@@ -1,6 +1,6 @@
 const scraper = require('../scraping-components/PodcastScraper');
 
-const scrape = async() => {
+const scrape = async () => {
 
     let params = {
         podcastName: 'The Daily',
@@ -11,7 +11,9 @@ const scrape = async() => {
         bucketName: process.env.THE_DAILY_BUCKET
     }
 
-    return scraper.scrape(params);
+    let results = await scraper.scrape(params);
+
+    return results;
 
 }
 
