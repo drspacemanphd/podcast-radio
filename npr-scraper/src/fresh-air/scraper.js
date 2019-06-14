@@ -3,7 +3,7 @@ const scraper = require('../scraping-components/PodcastScraper');
 const scrape = async () => {
 
     let params = {
-        podcastName: 'Fresh Air',
+        podcastName: process.env.FRESH_AIR_NAME,
         tableName: process.env.EPISODE_TABLE_NAME,
         rssUrl: process.env.FRESH_AIR_RSS_URL,
         retrievalWindowInDays: 7,

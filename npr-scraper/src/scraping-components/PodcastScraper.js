@@ -4,7 +4,7 @@ const podcastEpisodeDao = require('./PodcastEpisodeDao');
 
 /**
  * 
- * @param { podcastName (String), tableName(String), rssUrl(String), retrievalWindowInDays(Number), startIndex(Number), bucketName(string)} params
+ * @param { podcastName (String), tableName(String), rssUrl(String), retrievalWindowInDays(Number), startIndex(Number), bucketName(String)} params
  */
 const scrapePodcastForNewEpisodes = (params) => {
 
@@ -14,7 +14,7 @@ const scrapePodcastForNewEpisodes = (params) => {
         let latestEpisodesFromDB = podcastEpisodeDao.getLatestEpisodesFromDB(params);
 
         Promise.all([latestRssEntry, latestEpisodesFromDB])
-            .then(values => newEpisodeFilter.filter(values[0], values[1].Items, params.podcastName))
+            .then(values => newEpisodeFilter.filter(values[0], values[1].Items))
             .then(episode => {
                 if (episode) return podcastEpisodeDao.saveNewEpisode(episode, params);
                 else {

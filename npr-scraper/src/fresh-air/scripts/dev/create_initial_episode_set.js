@@ -7,10 +7,10 @@ const scrape = () => {
 
     let results = [];
 
-    for (let i = 10; i < 15; i++) {
+    for (let i = 0; i < 10; i++) {
 
         let params = {
-            podcastName: 'Fresh Air',
+            podcastName: process.env.FRESH_AIR_NAME,
             tableName: process.env.EPISODE_TABLE_NAME,
             rssUrl: process.env.FRESH_AIR_RSS_URL,
             retrievalWindowInDays: 600,

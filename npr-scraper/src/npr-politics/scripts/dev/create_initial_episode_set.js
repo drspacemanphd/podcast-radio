@@ -7,10 +7,10 @@ const scrape = () => {
 
     let results = [];
 
-    for (let i = 5; i < 10; i++) {
+    for (let i = 1; i < 5; i++) {
 
         let params = {
-            podcastName: 'The NPR Politics Podcast',
+            podcastName: process.env.NPR_POLITICS_NAME,
             tableName: process.env.EPISODE_TABLE_NAME,
             rssUrl: process.env.NPR_POLITICS_RSS_URL,
             retrievalWindowInDays: 600,

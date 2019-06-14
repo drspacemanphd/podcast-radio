@@ -1,25 +1,21 @@
 const PodcastEpisodeBuilder = require('common-config/src/common-model/PodcastEpisode');
 const moment = require('moment');
 
-const getNewEpisodes = (rssEntry, savedEpisodes, podcastName) => {
+const getNewEpisodes = (rssEntry, savedEpisodes) => {
 
     let filteredEpisodes = savedEpisodes.filter((e) => {
-        return e.EpisodeId.S === rssEntry[0].guid[0];
+        return e.EpisodeId.S === rssEntry.guid;
     });
-
-    let hours = Math.floor((rssEntry[0]['itunes:duration'][0]) / 3600);
-    let minutes = Math.floor(rssEntry[0]['itunes:duration'][0] / 60) - (hours * 60);
-    let seconds = Math.floor(rssEntry[0]['itunes:duration'][0]) - (hours * 3600) - (minutes * 60);
 
     if (filteredEpisodes.length === 0) {
         return new PodcastEpisodeBuilder()
-            .episodeId(rssEntry[0].guid[0])
-            .title(rssEntry[0].title[0])
-            .podcast(podcastName)
-            .publicationDate(moment(rssEntry[0].pubDate[0]).format('YYYY-MM-DD'))
+            .episodeId(rssEntry.guid)
+            .title(rssEntry.title)
+            .podcast(rssEntry.podcast)
+            .publicationDate(rssEntry.publicationDate)
             .downloads('0')
-            .link(rssEntry[0].enclosure[0]['$'].url)
-            .duration(hours.toString().padStart(2, '0') + ":" + minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0'))
+            .link(rssEntry.link)
+            .duration(rssEntry.duration)
             .build();
     } else return null;
 
