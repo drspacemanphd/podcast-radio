@@ -10,7 +10,7 @@ const scrape = () => {
     for (let i = 0; i < 5; i++) {
 
         let params = {
-            podcastName: 'The Daily',
+            podcastName: process.env.THE_DAILY_NAME,
             tableName: process.env.EPISODE_TABLE_NAME,
             rssUrl: process.env.THE_DAILY_RSS_URL,
             retrievalWindowInDays: 600,

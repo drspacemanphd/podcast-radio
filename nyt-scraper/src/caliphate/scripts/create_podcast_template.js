@@ -52,7 +52,7 @@ const getPodcastImage = (BUCKET_NAME) => {
 
     return new Promise((resolve, reject) => {
 
-        const req = https.get('https://is4-ssl.mzstatic.com/image/thumb/Music113/v4/c6/90/0f/c6900f4f-42b6-36ed-b15b-eb9b50e940f2/source/600x600bb.jpg', (res) => {
+        const req = https.get(process.env.CALIPHATE_IMAGE_URL, (res) => {
 
             s3.upload({
                 ACL: 'private',

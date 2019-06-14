@@ -14,7 +14,7 @@ const scrapePodcastForNewEpisodes = (params) => {
         let latestEpisodesFromDB = podcastEpisodeDao.getLatestEpisodesFromDB(params);
 
         Promise.all([latestRssEntry, latestEpisodesFromDB])
-            .then(values => newEpisodeFilter.filter(values[0], values[1].Items, params.podcastName))
+            .then(values => newEpisodeFilter.filter(values[0], values[1].Items))
             .then(episode => {
                 if (episode) return podcastEpisodeDao.saveNewEpisode(episode, params);
                 else {
