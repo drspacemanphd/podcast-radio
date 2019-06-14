@@ -1,6 +1,6 @@
 const rssParser = require('./PodcastEpisodeRssParser');
-const newEpisodeFilter = require('./NewPodcastEpisodeFilter');
-const podcastEpisodeDao = require('./PodcastEpisodeDao');
+const newEpisodeFilter = require('common-config/src/scraping-components/NewPodcastEpisodeFilter');
+const podcastEpisodeDao = require('common-config/src/scraping-components/PodcastEpisodeDao');
 
 /**
  * 

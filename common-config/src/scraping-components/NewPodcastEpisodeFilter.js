@@ -1,5 +1,4 @@
-const PodcastEpisodeBuilder = require('common-config/src/common-model/PodcastEpisode');
-const moment = require('moment');
+const PodcastEpisodeBuilder = require('../common-model/PodcastEpisode');
 
 const getNewEpisodes = (rssEntry, savedEpisodes) => {
 
