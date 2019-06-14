@@ -9,10 +9,10 @@ const scrape = () => {
 
         let results = [];
 
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 1; i++) {
 
             let params = {
-                podcastName: 'Lovett or Leave It',
+                podcastName: process.env.LOVETT_OR_LEAVE_IT_NAME,
                 tableName: process.env.EPISODE_TABLE_NAME,
                 rssUrl: process.env.LOVETT_OR_LEAVE_IT_RSS_URL,
                 retrievalWindowInDays: 600,

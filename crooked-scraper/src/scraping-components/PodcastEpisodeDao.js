@@ -1,4 +1,3 @@
-const moment = require('moment');
 const uploadMp3 = require('./PodcastEpisodeUploader');
 const aws = require('aws-sdk');
 aws.config.update({ region: 'us-east-1' });

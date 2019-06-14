@@ -7,7 +7,7 @@ const scrape = () => {
 
     let results = [];
 
-    for (let i = 10; i < 20; i++) {
+    for (let i = 0; i < 5; i++) {
 
         let params = {
             podcastName: 'The Daily',

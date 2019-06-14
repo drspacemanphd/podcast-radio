@@ -3,7 +3,7 @@ const scraper = require('../scraping-components/PodcastScraper');
 const scrape = async () => {
 
     let params = {
-        podcastName: 'Lovett or Leave It',
+        podcastName: process.env.LOVETT_OR_LEAVE_IT_NAME,
         tableName: process.env.EPISODE_TABLE_NAME,
         rssUrl: process.env.LOVETT_OR_LEAVE_IT_RSS_URL,
         retrievalWindowInDays: 30,
@@ -11,7 +11,9 @@ const scrape = async () => {
         bucketName: process.env.LOVETT_OR_LEAVE_IT_BUCKET
     }
 
-    return scraper.scrape(params);
+    let result = await scraper.scrape(params);
+
+    return result;
 
 }
 
