@@ -3,7 +3,7 @@ const scraper = require('../scraping-components/PodcastScraper');
 const scrape = async () => {
 
     let params = {
-        podcastName: 'Pod Save the World',
+        podcastName: process.env.POD_SAVE_THE_WORLD_NAME,
         tableName: process.env.EPISODE_TABLE_NAME,
         rssUrl: process.env.POD_SAVE_THE_WORLD_RSS_URL,
         retrievalWindowInDays: 30,
@@ -11,9 +11,9 @@ const scrape = async () => {
         bucketName: process.env.POD_SAVE_THE_WORLD_BUCKET
     }
 
-    let results = await scraper.scrape(params);
+    let result = await scraper.scrape(params);
 
-    return results;
+    return result;
 
 }
 

@@ -3,17 +3,17 @@ const scraper = require('../scraping-components/PodcastScraper');
 const scrape = async () => {
 
     let params = {
-        podcastName: 'Pod Save America',
+        podcastName: process.env.POD_SAVE_AMERICA_NAME,
         tableName: process.env.EPISODE_TABLE_NAME,
         rssUrl: process.env.POD_SAVE_AMERICA_RSS_URL,
-        retrievalWindowInDays: 7,
+        retrievalWindowInDays: 30,
         startIndex: 0,
         bucketName: process.env.POD_SAVE_AMERICA_BUCKET
     }
 
-    let results = await scraper.scrape(params);
+    let result = await scraper.scrape(params);
 
-    return results;
+    return result;
 
 }
 

@@ -10,7 +10,7 @@ const scrape = () => {
     for (let i = 0; i < 10; i++) {
 
         let params = {
-            podcastName: 'Pod Save America',
+            podcastName: process.env.POD_SAVE_AMERICA_NAME,
             tableName: process.env.EPISODE_TABLE_NAME,
             rssUrl: process.env.POD_SAVE_AMERICA_RSS_URL,
             retrievalWindowInDays: 600,
