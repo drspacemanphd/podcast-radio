@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import PodcastListView from './views/PodcastListView';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
-import PodcastView from './views/PodcastView';
+import views from './config/Navigation';
 
 class Home extends React.Component {
     constructor(props) {
@@ -13,11 +13,20 @@ class Home extends React.Component {
         }
     }
 
+    static navigationOptions = {
+        title: 'Podcast Radio',
+        headerStyle: {
+            backgroundColor: '#00356B',
+        },
+        headerTitleStyle: {
+            color: 'white',
+            fontFamily: 'sans-serif-thin'
+        }
+    }
+
     componentDidMount() {
         fetch('https://yi4qw8i0fe.execute-api.us-east-1.amazonaws.com/dev/podcast/all')
-            .then(result => {
-                return result.json();
-            })
+            .then(result => result.json())
             .then(result => {
                 this.setState({
                     podcasts: result.payload,
@@ -31,7 +40,7 @@ class Home extends React.Component {
 
     render() {
         if (!this.state.hasLoaded) {
-            return <ActivityIndicator size={100} color='#800000' style={styles.loader} />
+            return <ActivityIndicator size={100} color='#00356B' style={styles.loader} />
         } else {
             return (
                 <View style={styles.container}>
@@ -62,15 +71,14 @@ const styles = StyleSheet.create({
     },
 });
 
-const appStack = createStackNavigator(
-    {
-        Home: Home,
-        PodcastView: PodcastView
-    },
-    {
-        initialRouteName: 'Home'
-    }
-);
+const appStack = () => {
+    views.Home = Home;
+    return createStackNavigator(views,
+        {
+            initialRouteName: 'Home',
+            headerLayoutPreset: 'center'
+        }
+    );
+};
 
-export default createAppContainer(appStack);
-
+export default createAppContainer(appStack());

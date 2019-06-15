@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { ListItem } from 'react-native-elements';
 
 export default class PodcastListView extends React.Component {
@@ -10,24 +10,26 @@ export default class PodcastListView extends React.Component {
     render() {
         return (
             <View style={styles.listContainer}>
-                {
-                    this.props.podcasts.map((p, i) => {
-                        return (
-                            <ListItem
-                                key={i}
-                                title={p.PodcastName}
-                                subtitle={p.PodcastAuthor}
-                                leftAvatar={{ source: { uri: p.PodcastImage }}}
-                                onPress={() => {
-                                    this.props.navigation.navigate('PodcastView', {
-                                        podcast: p
-                                    });
-                                }}
-                                containerStyle={styles.item}
-                            />
-                        );
-                    })
-                }
+                <ScrollView>
+                    {
+                        this.props.podcasts.map((p, i) => {
+                            return (
+                                <ListItem
+                                    key={i}
+                                    title={p.PodcastName}
+                                    subtitle={p.PodcastAuthor}
+                                    leftAvatar={{ source: { uri: p.PodcastImage } }}
+                                    onPress={() => {
+                                        this.props.navigation.navigate('PodcastView', {
+                                            podcast: p
+                                        });
+                                    }}
+                                    containerStyle={styles.item}
+                                />
+                            );
+                        })
+                    }
+                </ScrollView>
             </View>
         );
     }
