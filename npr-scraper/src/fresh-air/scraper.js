@@ -6,9 +6,10 @@ const scrape = async () => {
         podcastName: process.env.FRESH_AIR_NAME,
         tableName: process.env.EPISODE_TABLE_NAME,
         rssUrl: process.env.FRESH_AIR_RSS_URL,
-        retrievalWindowInDays: 7,
+        retrievalWindowInDays: 600,
         startIndex: 0,
-        bucketName: process.env.FRESH_AIR_BUCKET
+        bucketName: process.env.S3_BUCKET,
+        keyPrefix: process.env.FRESH_AIR_KEY_PREFIX
     }
 
     let results = await scraper.scrape(params);

@@ -7,7 +7,7 @@ const scrape = () => {
 
     let results = [];
 
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 10; i++) {
 
         let params = {
             podcastName: process.env.FRESH_AIR_NAME,
@@ -15,7 +15,8 @@ const scrape = () => {
             rssUrl: process.env.FRESH_AIR_RSS_URL,
             retrievalWindowInDays: 600,
             startIndex: i,
-            bucketName: process.env.FRESH_AIR_BUCKET
+            bucketName: process.env.S3_BUCKET,
+            keyPrefix: process.env.FRESH_AIR_KEY_PREFIX
         }
 
         results.push(scraper.scrape(params));

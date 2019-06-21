@@ -12,7 +12,7 @@ const getPodcasts = () => {
         const params = {
             TableName: process.env.PODCAST_TABLE_NAME,
             IndexName: 'PODCAST_DOWNLOADS',
-            ProjectionExpression: 'PodcastName, PodcastAuthor, PodcastCategory, PodcastDownloads, PodcastImage'
+            ProjectionExpression: 'PodcastName, PodcastAuthor, PodcastCategory, PodcastDownloads, PodcastBucket, PodcastImageKey'
         }
 
         db.scan(params, (err, result) => {
@@ -40,7 +40,7 @@ const getPodcastsByCategory = (category) => {
             },
             KeyConditionExpression: 'PodcastCategory = :c',
             IndexName: 'CATEGORY_DOWNLOADS',
-            ProjectionExpression: 'PodcastName, PodcastAuthor, PodcastCategory, PodcastDownloads, PodcastImage'
+            ProjectionExpression: 'PodcastName, PodcastAuthor, PodcastCategory, PodcastDownloads, PodcastBucket, PodcastImageKey'
         }
 
         db.query(params, (err, result) => {
@@ -68,7 +68,7 @@ const getEpisodesByPodcastName = (PodcastName) => {
             },
             KeyConditionExpression: 'Podcast = :p',
             IndexName: 'EPISODE_PUBLICATION_DATE',
-            ProjectionExpression: 'EpisodeId, Podcast, Downloads, Link, PublicationDate, Title',
+            ProjectionExpression: 'EpisodeId, Podcast, Downloads, EpisodeS3Bucket, EpisodeS3Key, PublicationDate, Title',
             ScanIndexForward: false
         }
 

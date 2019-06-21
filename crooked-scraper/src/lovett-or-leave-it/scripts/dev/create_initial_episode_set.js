@@ -9,7 +9,7 @@ const scrape = () => {
 
         let results = [];
 
-        for (let i = 0; i < 1; i++) {
+        for (let i = 0; i < 10; i++) {
 
             let params = {
                 podcastName: process.env.LOVETT_OR_LEAVE_IT_NAME,
@@ -17,7 +17,8 @@ const scrape = () => {
                 rssUrl: process.env.LOVETT_OR_LEAVE_IT_RSS_URL,
                 retrievalWindowInDays: 600,
                 startIndex: i,
-                bucketName: process.env.LOVETT_OR_LEAVE_IT_BUCKET
+                bucketName: process.env.S3_BUCKET,
+                keyPrefix: process.env.LOVETT_OR_LEAVE_IT_KEY_PREFIX
             }
 
             results.push(scraper.scrape(params));

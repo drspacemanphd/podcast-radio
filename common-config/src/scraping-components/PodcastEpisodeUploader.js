@@ -21,7 +21,7 @@ const uploadEpisode = (url, bucketKey, bucketName, podcastName) => {
                     s3.upload({
                         ACL: 'private',
                         Bucket: bucketName,
-                        Key: bucketKey,
+                        Key: 'public/' + bucketKey,
                         Body: res,
                         ContentType: 'audio/mpeg'
                     }, (err, result) => {

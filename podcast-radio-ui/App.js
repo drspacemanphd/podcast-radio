@@ -1,8 +1,7 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
 import Home from './src/Home';
 import Amplify from 'aws-amplify';
-import { withAuthenticator, ForgotPassword } from 'aws-amplify-react-native';
+import { withAuthenticator, ForgotPassword, SignUp, ConfirmSignUp, RequireNewPassword } from 'aws-amplify-react-native';
 import { I18n } from 'aws-amplify';
 import CustomSignIn from './src/auth/CustomSignIn';
 
@@ -10,8 +9,18 @@ Amplify.configure(
   {
     Auth: {
       region: 'us-east-1',
-      userPoolId: 'us-east-1_LpX73ITEv',
-      userPoolWebClientId: '5s0i6oj7bhlav904tf7e6utjj0'
+      userPoolId: 'us-east-1_sBg9MvsjQ',
+      userPoolWebClientId: '1ib0je127c4ed6ma28qqkab32n',
+      identityPoolId: 'us-east-1:021c740d-ffd5-4d98-8331-3a83c1ff7068',
+    },
+    Analytics: {
+      disabled: true
+    },
+    Storage: {
+      AWSS3: {
+        bucket: 'podcast-radio-dev',
+        region: 'us-east-1'
+      }
     }
   }
 );
@@ -25,7 +34,7 @@ const dict = {
 
 I18n.putVocabularies(dict);
 
-export default class App extends React.Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -38,7 +47,10 @@ export default class App extends React.Component {
 
 }
 
-// export default withAuthenticator(App, false, [
-//   <CustomSignIn />,
-//   <ForgotPassword />,
-// ]);
+export default withAuthenticator(App, false, [
+  <CustomSignIn />,
+  <ForgotPassword />,
+  <SignUp />,
+  <ConfirmSignUp />,
+  <RequireNewPassword />
+]);

@@ -7,16 +7,16 @@ const scrape = () => {
 
     let results = [];
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 15; i++) {
 
         let params = {
-            podcastName: process.env.NPR_POLITICS_NAME,
+            podcastName: process.env.CALIPHATE_NAME,
             tableName: process.env.EPISODE_TABLE_NAME,
-            rssUrl: process.env.NPR_POLITICS_RSS_URL,
-            retrievalWindowInDays: 600,
+            rssUrl: process.env.CALIPHATE_RSS_URL,
+            retrievalWindowInDays: 1000,
             startIndex: i,
             bucketName: process.env.S3_BUCKET,
-            keyPrefix: process.env.NPR_POLITICS_KEY_PREFIX
+            keyPrefix: process.env.CALIPHATE_KEY_PREFIX
         }
 
         results.push(scraper.scrape(params));

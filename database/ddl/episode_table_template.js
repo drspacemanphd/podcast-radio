@@ -28,7 +28,7 @@ const createEpisodeTable = async (TABLE_NAME) => {
                 AttributeType: 'N'
             },
             {
-                AttributeName: 'Link',
+                AttributeName: 'EpisodeS3Key',
                 AttributeType: 'S'
             }
         ],
@@ -63,13 +63,7 @@ const createEpisodeTable = async (TABLE_NAME) => {
                     }
                 ],
                 Projection: {
-                    ProjectionType: 'INCLUDE',
-                    NonKeyAttributes: [
-                        'EpisodeId',
-                        'Title',
-                        'Downloads',
-                        'Link'
-                    ]
+                    ProjectionType: 'ALL',
                 },
                 ProvisionedThroughput: {
                     ReadCapacityUnits: 1,
@@ -89,13 +83,7 @@ const createEpisodeTable = async (TABLE_NAME) => {
                     }
                 ],
                 Projection: {
-                    ProjectionType: 'INCLUDE',
-                    NonKeyAttributes: [
-                        'Title',
-                        'Podcast',
-                        'PublicationDate',
-                        'Link'
-                    ]
+                    ProjectionType: 'ALL',
                 },
                 ProvisionedThroughput: {
                     ReadCapacityUnits: 1,
@@ -103,14 +91,14 @@ const createEpisodeTable = async (TABLE_NAME) => {
                 }
             },
             {
-                IndexName: 'TITLE_LINK',
+                IndexName: 'TITLE_S3_KEY',
                 KeySchema: [
                     {
                         AttributeName: 'Title',
                         KeyType: 'HASH'
                     },
                     {
-                        AttributeName: 'Link',
+                        AttributeName: 'EpisodeS3Key',
                         KeyType: 'RANGE'
                     }
                 ],

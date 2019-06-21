@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { Audio } from 'expo-av';
+import { Storage } from 'aws-amplify';
 
 export default class EpisodeView extends React.Component {
     constructor(props) {
@@ -38,8 +39,11 @@ export default class EpisodeView extends React.Component {
             }
         )
         .then(() => {
+            return Storage.get(this.episode.EpisodeS3Key);
+        })
+        .then((url) => {
             this.soundObject = new Audio.Sound();
-            this.soundObject.loadAsync({ uri: this.episode.Link });
+            this.soundObject.loadAsync({ uri: url });
         })
         .catch(err => { 
             console.log(`ERROR WHEN SETTING UP AUDIO`); 
@@ -58,7 +62,7 @@ export default class EpisodeView extends React.Component {
         return (
             <View style={styles.container}>
                 <Image 
-                    source={{uri: this.podcast.PodcastImage}} 
+                    source={{uri: this.podcast.ImageUrl}} 
                     style={styles.image}
                 />
                 <Text>{this.episode.Title}</Text>

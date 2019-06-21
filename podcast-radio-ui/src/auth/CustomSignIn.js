@@ -2,11 +2,11 @@ import React from 'react';
 import { StyleSheet, KeyboardAvoidingView, Dimensions, Text, View } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { SignIn } from 'aws-amplify-react-native';
+import { Auth } from 'aws-amplify';
 
 export default class CustomSignIn extends SignIn {
     constructor(props) {
-        super(props)
-        this._validAuthStates = ['signIn', 'signedOut', 'signedUp'];
+        super(props);
     }
 
     showComponent(theme) {
@@ -30,7 +30,7 @@ export default class CustomSignIn extends SignIn {
                 <Text style={{color: 'white', fontSize: 16, marginTop: 10 }} onPress={() => this.changeState('forgotPassword')}>Forget your password?</Text>
                 <View style={styles.buttonContainer}>
                     <Button type='outline' title='Sign In' buttonStyle={styles.button} titleStyle={styles.buttonTitle} onPress={this.signIn}/>
-                    <Button type='outline' title='Sign Up' buttonStyle={styles.button} titleStyle={styles.buttonTitle} />
+                    <Button type='outline' title='Sign Up' buttonStyle={styles.button} titleStyle={styles.buttonTitle} onPress={() => this.changeState('signUp')}/>
                 </View>
             </KeyboardAvoidingView>
         );
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#003366',
+        backgroundColor: 'rgba(0,51,102,0.9)'
     },
     inputContainer: {
         backgroundColor: 'white',

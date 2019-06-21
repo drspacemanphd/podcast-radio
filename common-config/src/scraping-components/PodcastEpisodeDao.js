@@ -13,7 +13,7 @@ const getLatestEpisodesFromDB = (args) => {
             },
             IndexName: 'EPISODE_PUBLICATION_DATE',
             KeyConditionExpression: 'Podcast = :p',
-            ProjectionExpression: 'EpisodeId, Title, Podcast, PublicationDate, Downloads, Link',
+            ProjectionExpression: 'EpisodeId, Title, Podcast, PublicationDate, Downloads, EpisodeS3Bucket, EpisodeS3Key',
             TableName: args.tableName
         }
 
@@ -31,24 +31,26 @@ const getLatestEpisodesFromDB = (args) => {
     });
 }
 
-const saveNewEpisode = async (episode, args) => {
+const saveNewEpisode = async (rssEntry, args) => {
 
-    let key = episode.Title + '.mp3';
-    key = key.replace('/', 'and');
-    let mp3 = await uploadMp3(episode.Link, key, args.bucketName, args.podcastName);
+    let title = rssEntry.title + '.mp3';
+    title = title.replace('/', 'and');
+    let episodeKey = args.keyPrefix + '/' + title;
+    await uploadMp3(rssEntry.link, episodeKey, args.bucketName, args.podcastName);
 
     return new Promise((resolve, reject) => {
-                
+        
         const params = {
             TableName: args.tableName,
             Item: {
-                'EpisodeId': { S: episode.EpisodeId },
-                'Title': { S: episode.Title },
-                'Podcast': { S: episode.Podcast },
-                'PublicationDate': { S: episode.PublicationDate },
-                'Downloads': { N: episode.Downloads },
-                'Link': { S: mp3.Location },
-                'Duration': { S: episode.Duration }
+                'EpisodeId': { S: rssEntry.guid },
+                'Title': { S: rssEntry.title },
+                'Podcast': { S: rssEntry.podcast },
+                'PublicationDate': { S: rssEntry.publicationDate },
+                'Downloads': { N: '0' },
+                'EpisodeS3Bucket': { S: args.bucketName },
+                'EpisodeS3Key': { S: episodeKey },
+                'Duration': { S: rssEntry.duration }
             }
         }
 

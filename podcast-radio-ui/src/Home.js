@@ -3,6 +3,7 @@ import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import PodcastListView from './views/PodcastListView';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import views from './config/Navigation';
+import { Auth, Storage } from 'aws-amplify';
 
 class Home extends React.Component {
     constructor(props) {
@@ -25,17 +26,42 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
+
         fetch('https://yi4qw8i0fe.execute-api.us-east-1.amazonaws.com/dev/podcast/all')
             .then(result => result.json())
             .then(result => {
+
+                let podcasts = result.payload;
+                
+                return new Promise((resolve, reject) => {
+                    let signedUrls = [];
+                    podcasts.forEach(p => signedUrls.push(Storage.get(p.PodcastImageKey)));
+
+                    Promise.all(signedUrls)
+                        .then(urls => {
+                            for (let i = 0; i < urls.length; i++) {
+                                podcasts[i].ImageUrl = urls[i];
+                            }
+                            resolve(podcasts);
+                        })
+                        .catch(err => {
+                            console.log(`ERROR WHEN GETTING TEMP URLS`);
+                            console.log(`ERROR DUE TO ${err}`);                            
+                            reject(err);
+                        })
+                });
+
+            })
+            .then(podcasts => {
                 this.setState({
-                    podcasts: result.payload,
+                    podcasts: podcasts,
                     hasLoaded: true
                 });
             })
             .catch(err => {
                 console.log(err);
             });
+
     }
 
     render() {
