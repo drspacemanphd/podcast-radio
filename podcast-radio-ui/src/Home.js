@@ -3,7 +3,7 @@ import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import PodcastListView from './views/PodcastListView';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import views from './config/Navigation';
-import { Auth, Storage } from 'aws-amplify';
+import { Storage } from 'aws-amplify';
 
 class Home extends React.Component {
     constructor(props) {
@@ -32,7 +32,7 @@ class Home extends React.Component {
             .then(result => {
 
                 let podcasts = result.payload;
-                Auth.signOut();
+
                 return new Promise((resolve, reject) => {
                     let signedUrls = [];
                     podcasts.forEach(p => signedUrls.push(Storage.get(p.PodcastImageKey)));
