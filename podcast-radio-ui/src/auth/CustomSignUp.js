@@ -1,24 +1,25 @@
 import React from 'react';
 import { StyleSheet, KeyboardAvoidingView, Dimensions, Text, View } from 'react-native';
 import { Input, Button } from 'react-native-elements';
-import { SignIn } from 'aws-amplify-react-native';
+import { SignUp } from 'aws-amplify-react-native';
 
-export default class CustomSignIn extends SignIn {
+export default class CustomSignUp extends SignUp {
     constructor(props) {
         super(props);
     }
 
     showComponent(theme) {
+        this.signUpFields = this.defaultSignUpFields;
         return (
             <KeyboardAvoidingView behavior='padding' style={styles.container}>
-                <Input 
+                <Input
                     containerStyle={styles.inputContainer}
-                    inputStyle={styles.input} 
+                    inputStyle={styles.input}
                     placeholder='Email'
                     label='Email'
                     onChangeText={(text) => this.setState({ username: text })}
                 />
-                <Input 
+                <Input
                     containerStyle={styles.inputContainer}
                     inputStyle={styles.input}
                     secureTextEntry={true}
@@ -27,8 +28,8 @@ export default class CustomSignIn extends SignIn {
                     onChangeText={(text) => this.setState({ password: text })}
                 />
                 <View style={styles.buttonContainer}>
-                    <Button type='outline' title='Sign In' buttonStyle={styles.button} titleStyle={styles.buttonTitle} onPress={this.signIn}/>
-                    <Text style={{ color: 'white', marginTop: 25, fontSize: 15 }} onPress={() => this.changeState('signUp')}>Don't have an account? Click here to sign up!</Text>
+                    <Button type='outline' title='Sign Up' buttonStyle={styles.button} titleStyle={styles.buttonTitle} onPress={this.signUp} />
+                    <Text style={{ color: 'white', marginTop: 25, fontSize: 15 }} onPress={() => this.changeState('signIn')}>Already have an account? Click here to sign in!</Text>
                 </View>
                 <Text style={{ color: 'white' }}>{this.state.error === undefined ? '' : this.state.error}</Text>
             </KeyboardAvoidingView>
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
         marginTop: 20
     },
     button: {
-        backgroundColor: 'white', 
+        backgroundColor: 'white',
         width: 150,
         height: 50,
         borderStyle: 'solid',

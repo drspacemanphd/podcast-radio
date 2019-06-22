@@ -32,7 +32,7 @@ class Home extends React.Component {
             .then(result => {
 
                 let podcasts = result.payload;
-                
+                Auth.signOut();
                 return new Promise((resolve, reject) => {
                     let signedUrls = [];
                     podcasts.forEach(p => signedUrls.push(Storage.get(p.PodcastImageKey)));

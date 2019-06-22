@@ -1,9 +1,10 @@
 import React from 'react';
-import { StyleSheet, KeyboardAvoidingView, Dimensions, Text, View } from 'react-native';
-import { Input, Button } from 'react-native-elements';
-import { SignIn } from 'aws-amplify-react-native';
+import { View, Text, StyleSheet, KeyboardAvoidingView, Dimensions } from 'react-native';
+import { Button, Input } from 'react-native-elements';
+import { ConfirmSignUp } from 'aws-amplify-react-native';
+import { Auth } from 'aws-amplify';
 
-export default class CustomSignIn extends SignIn {
+export default class CustomConfirmSignUp extends ConfirmSignUp {
     constructor(props) {
         super(props);
     }
@@ -11,24 +12,24 @@ export default class CustomSignIn extends SignIn {
     showComponent(theme) {
         return (
             <KeyboardAvoidingView behavior='padding' style={styles.container}>
-                <Input 
-                    containerStyle={styles.inputContainer}
-                    inputStyle={styles.input} 
-                    placeholder='Email'
-                    label='Email'
-                    onChangeText={(text) => this.setState({ username: text })}
-                />
-                <Input 
+                <Input
                     containerStyle={styles.inputContainer}
                     inputStyle={styles.input}
-                    secureTextEntry={true}
-                    placeholder='Password'
-                    label='Password'
-                    onChangeText={(text) => this.setState({ password: text })}
+                    placeholder='Email'
+                    label='Email'
+                    value={this.state.username}
+                    onChangeText={(text) => this.setState({ username: text })}
+                />
+                <Input
+                    containerStyle={styles.inputContainer}
+                    inputStyle={styles.input}
+                    placeholder='Enter Your Confirmation Code'
+                    label='Confirmation Code'
+                    onChangeText={(text) => this.setState({ code: text })}
                 />
                 <View style={styles.buttonContainer}>
-                    <Button type='outline' title='Sign In' buttonStyle={styles.button} titleStyle={styles.buttonTitle} onPress={this.signIn}/>
-                    <Text style={{ color: 'white', marginTop: 25, fontSize: 15 }} onPress={() => this.changeState('signUp')}>Don't have an account? Click here to sign up!</Text>
+                    <Button type='outline' title='Confirm' buttonStyle={styles.button} titleStyle={styles.buttonTitle} onPress={this.confirm} disabled={!this.state.username || !this.state.code} />
+                    <Text style={{ color: 'white', marginTop: 25, fontSize: 15 }}>Check your email for a confirmation code. You will be asked to sign in again after confirmation.</Text>
                 </View>
                 <Text style={{ color: 'white' }}>{this.state.error === undefined ? '' : this.state.error}</Text>
             </KeyboardAvoidingView>
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
         marginTop: 20
     },
     button: {
-        backgroundColor: 'white', 
+        backgroundColor: 'white',
         width: 150,
         height: 50,
         borderStyle: 'solid',

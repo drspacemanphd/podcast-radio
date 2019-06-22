@@ -4,6 +4,8 @@ import Amplify from 'aws-amplify';
 import { withAuthenticator, ForgotPassword, SignUp, ConfirmSignUp, RequireNewPassword } from 'aws-amplify-react-native';
 import { I18n } from 'aws-amplify';
 import CustomSignIn from './src/auth/CustomSignIn';
+import CustomSignUp from './src/auth/CustomSignUp';
+import CustomConfirmSignUp from './src/auth/CustomConfirmSignUp';
 
 Amplify.configure(
   {
@@ -50,7 +52,7 @@ class App extends React.Component {
 export default withAuthenticator(App, false, [
   <CustomSignIn />,
   <ForgotPassword />,
-  <SignUp />,
-  <ConfirmSignUp />,
+  <CustomSignUp />,
+  <CustomConfirmSignUp />,
   <RequireNewPassword />
 ]);
