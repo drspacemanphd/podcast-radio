@@ -7,7 +7,7 @@ const scrape = () => {
 
     let results = [];
 
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 10; i++) {
 
         let params = {
             podcastName: process.env.THE_DAILY_NAME,
