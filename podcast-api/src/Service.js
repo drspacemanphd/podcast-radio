@@ -66,9 +66,9 @@ const getEpisodesByPodcastName = (PodcastName) => {
             ExpressionAttributeValues: {
                 ':p' : PodcastName
             },
-            KeyConditionExpression: 'Podcast = :p',
+            KeyConditionExpression: 'EpisodePodcast = :p',
             IndexName: 'EPISODE_PUBLICATION_DATE',
-            ProjectionExpression: 'EpisodeId, Podcast, Downloads, EpisodeS3Bucket, EpisodeS3Key, PublicationDate, Title',
+            ProjectionExpression: 'EpisodeId, EpisodePodcast, EpisodeDownloads, EpisodeS3Bucket, EpisodeS3Key, EpisodePublicationDate, EpisodeTitle, EpisodeDuration',
             ScanIndexForward: false
         }
 

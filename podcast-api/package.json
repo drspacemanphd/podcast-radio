@@ -4,6 +4,7 @@
   "description": "Central API for user queries for podcasts and episodes",
   "main": "index.js",
   "scripts": {
+    "start": "node ./src/App.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

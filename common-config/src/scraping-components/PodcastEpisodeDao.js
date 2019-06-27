@@ -12,8 +12,8 @@ const getLatestEpisodesFromDB = (args) => {
                 ':p': { 'S': args.podcastName },
             },
             IndexName: 'EPISODE_PUBLICATION_DATE',
-            KeyConditionExpression: 'Podcast = :p',
-            ProjectionExpression: 'EpisodeId, Title, Podcast, PublicationDate, Downloads, EpisodeS3Bucket, EpisodeS3Key',
+            KeyConditionExpression: 'EpisodePodcast = :p',
+            ProjectionExpression: 'EpisodeId, EpisodeTitle, EpisodePodcast, EpisodePublicationDate, EpisodeDownloads, EpisodeS3Bucket, EpisodeS3Key, EpisodeDuration',
             TableName: args.tableName
         }
 
@@ -44,13 +44,13 @@ const saveNewEpisode = async (rssEntry, args) => {
             TableName: args.tableName,
             Item: {
                 'EpisodeId': { S: rssEntry.guid },
-                'Title': { S: rssEntry.title },
-                'Podcast': { S: rssEntry.podcast },
-                'PublicationDate': { S: rssEntry.publicationDate },
-                'Downloads': { N: '0' },
+                'EpisodeTitle': { S: rssEntry.title },
+                'EpisodePodcast': { S: rssEntry.podcast },
+                'EpisodePublicationDate': { S: rssEntry.publicationDate },
+                'EpisodeDownloads': { N: '0' },
                 'EpisodeS3Bucket': { S: args.bucketName },
                 'EpisodeS3Key': { S: episodeKey },
-                'Duration': { S: rssEntry.duration }
+                'EpisodeDuration': { S: rssEntry.duration }
             }
         }
 

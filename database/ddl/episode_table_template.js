@@ -12,24 +12,20 @@ const createEpisodeTable = async (TABLE_NAME) => {
                 AttributeType: 'S'
             },
             {
-                AttributeName: 'Title',
+                AttributeName: 'EpisodeTitle',
                 AttributeType: 'S'
             },
             {
-                AttributeName: 'Podcast',
+                AttributeName: 'EpisodePodcast',
                 AttributeType: 'S'
             },
             {
-                AttributeName: 'PublicationDate',
+                AttributeName: 'EpisodePublicationDate',
                 AttributeType: 'S'
             },
             {
-                AttributeName: 'Downloads',
+                AttributeName: 'EpisodeDownloads',
                 AttributeType: 'N'
-            },
-            {
-                AttributeName: 'EpisodeS3Key',
-                AttributeType: 'S'
             }
         ],
         KeySchema: [
@@ -38,7 +34,7 @@ const createEpisodeTable = async (TABLE_NAME) => {
                 KeyType: 'HASH'
             },
             {
-                AttributeName: 'Podcast',
+                AttributeName: 'EpisodePodcast',
                 KeyType: 'RANGE'
             }
         ],
@@ -54,11 +50,11 @@ const createEpisodeTable = async (TABLE_NAME) => {
                 IndexName: 'EPISODE_PUBLICATION_DATE',
                 KeySchema: [
                     {
-                        AttributeName: 'Podcast',
+                        AttributeName: 'EpisodePodcast',
                         KeyType: 'HASH'
                     },
                     {
-                        AttributeName: 'PublicationDate',
+                        AttributeName: 'EpisodePublicationDate',
                         KeyType: 'RANGE'
                     }
                 ],
@@ -78,7 +74,7 @@ const createEpisodeTable = async (TABLE_NAME) => {
                         KeyType: 'HASH'
                     },
                     {
-                        AttributeName: 'Downloads',
+                        AttributeName: 'EpisodeDownloads',
                         KeyType: 'RANGE'
                     }
                 ],
@@ -91,14 +87,14 @@ const createEpisodeTable = async (TABLE_NAME) => {
                 }
             },
             {
-                IndexName: 'TITLE_S3_KEY',
+                IndexName: 'EPISODE_TITLE',
                 KeySchema: [
                     {
-                        AttributeName: 'Title',
+                        AttributeName: 'EpisodeId',
                         KeyType: 'HASH'
                     },
                     {
-                        AttributeName: 'EpisodeS3Key',
+                        AttributeName: 'EpisodeTitle',
                         KeyType: 'RANGE'
                     }
                 ],

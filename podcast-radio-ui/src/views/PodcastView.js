@@ -53,8 +53,8 @@ export default class PodcastView extends React.Component {
                             return (
                                 <ListItem
                                     key={i}
-                                    title={e.Title}
-                                    subtitle={e.PublicationDate}
+                                    title={e.EpisodeTitle}
+                                    subtitle={e.EpisodePublicationDate}
                                     leftAvatar={{ source: { uri: this.podcast.ImageUrl } }}
                                     onPress={() => {
                                         this.props.navigation.navigate('EpisodeView', {

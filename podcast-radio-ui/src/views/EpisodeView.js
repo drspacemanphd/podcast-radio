@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { Audio } from 'expo-av';
 import { Storage } from 'aws-amplify';
@@ -14,7 +14,7 @@ export default class EpisodeView extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
         return {
-            title: navigation.getParam('episode').Title,
+            title: navigation.getParam('episode').EpisodeTitle,
             headerStyle: {
                 backgroundColor: '#00356B',
             },
@@ -43,7 +43,7 @@ export default class EpisodeView extends React.Component {
         })
         .then((url) => {
             this.soundObject = new Audio.Sound();
-            this.soundObject.loadAsync({ uri: url });
+            return this.soundObject.loadAsync({ uri: url });
         })
         .catch(err => { 
             console.log(`ERROR WHEN SETTING UP AUDIO`); 
@@ -54,7 +54,15 @@ export default class EpisodeView extends React.Component {
 
     componentWillUnmount() {
         if (this.soundObject) {
-            this.soundObject.stopAsync();
+            this.soundObject.stopAsync()
+                .then(() => {
+                    return this.soundObject.unloadAsync();
+                })
+                .catch((err) => {
+                    console.log(`ERROR OCCURRED WHEN STOPPING PODCAST`);
+                    console.log(`ERROR DUE TO ${err}`);
+                    return err;
+                });
         }
     }
 
@@ -65,11 +73,12 @@ export default class EpisodeView extends React.Component {
                     source={{uri: this.podcast.ImageUrl}} 
                     style={styles.image}
                 />
-                <Text>{this.episode.Title}</Text>
-                <Icon 
+                <Text style={styles.title}>{this.episode.EpisodeTitle}</Text>
+                <Icon
                     name='play'
                     type='font-awesome'
                     onPress={() => this.play()}
+                    size={40}
                 />
             </View>
         );
@@ -78,7 +87,7 @@ export default class EpisodeView extends React.Component {
     play() {
         this.soundObject.playAsync()
             .catch(err => {
-                console.log(`ERROR OCCURRED WHEN PLAYING ${this.episode.Title}`);
+                console.log(`ERROR OCCURRED WHEN PLAYING ${this.episode.EpisodeTitle}`);
                 console.log(`ERROR DUE TO: ${err}`);
             });
     }
@@ -87,19 +96,25 @@ export default class EpisodeView extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         height: '100%',
         width: '100%',
-        backgroundColor: '#fffcf4'
+        backgroundColor: '#fffcf4',
+        flexWrap: 'wrap'
     },
     image: {
         height: 350, 
         width: 350,
         margin: 10
-    }, 
+    },
+    title: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        margin: 10
+    },
     item: {
         backgroundColor: '#fffcf4',
         borderBottomColor: 'black',
