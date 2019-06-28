@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, ActivityIndicator, ScrollView } from 'react-native';
 import { ListItem } from 'react-native-elements';
+import { API } from 'aws-amplify';
 
 export default class PodcastView extends React.Component {
 
@@ -28,8 +29,7 @@ export default class PodcastView extends React.Component {
     }
 
     componentDidMount() {
-        fetch('https://yi4qw8i0fe.execute-api.us-east-1.amazonaws.com/dev/podcast/' + this.podcast.PodcastName + '/episodes')
-            .then(result => result.json())
+        API.get('PodcastAPI', '/podcast/' + this.podcast.PodcastName + '/episodes')
             .then(result => {
                 this.setState({
                     episodes: result.payload,
@@ -37,7 +37,8 @@ export default class PodcastView extends React.Component {
                 });
             })
             .catch(err => {
-                console.log(err);
+                console.log(`ERROR WHEN GETTING ${this.podcast.PodcastName} EPISODES`);
+                console.log(`ERROR DUE TO ${err}`);
             });
     }
 

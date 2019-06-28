@@ -3,7 +3,7 @@ import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import PodcastListView from './views/PodcastListView';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import views from './config/Navigation';
-import { Storage } from 'aws-amplify';
+import { Storage, API } from 'aws-amplify';
 
 class Home extends React.Component {
     constructor(props) {
@@ -26,9 +26,7 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
-
-        fetch('https://yi4qw8i0fe.execute-api.us-east-1.amazonaws.com/dev/podcast/all')
-            .then(result => result.json())
+        API.get("PodcastAPI", "/podcast/all")
             .then(result => {
 
                 let podcasts = result.payload;
@@ -59,7 +57,8 @@ class Home extends React.Component {
                 });
             })
             .catch(err => {
-                console.log(err);
+                console.log(`ERROR WHEN GETTING PODCASTS`);
+                console.log(`ERROR DUE TO ${err}`);  
             });
 
     }

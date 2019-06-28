@@ -15,6 +15,14 @@ Amplify.configure(
       userPoolWebClientId: '1ib0je127c4ed6ma28qqkab32n',
       identityPoolId: 'us-east-1:021c740d-ffd5-4d98-8331-3a83c1ff7068',
     },
+    API: {
+      endpoints: [
+        {
+          name: "PodcastAPI",
+          endpoint: "https://yi4qw8i0fe.execute-api.us-east-1.amazonaws.com/dev"
+        }
+      ]
+    },
     Analytics: {
       disabled: true
     },
