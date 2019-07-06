@@ -1,8 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, ActivityIndicator } from 'react-native';
-import { Icon, Overlay } from 'react-native-elements';
+import { Icon, Overlay, Slider } from 'react-native-elements';
 import { Storage } from 'aws-amplify';
 import { connect } from 'react-redux';
+import moment from 'moment';
+
 import actions from '../actions/index';
 
 class EpisodeView extends React.Component {
@@ -43,7 +45,7 @@ class EpisodeView extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                {this.renderOverlay()}
+                {this._renderOverlay()}
                 <Image
                     source={{ uri: this.podcast.ImageUrl }}
                     style={styles.image}
@@ -57,6 +59,24 @@ class EpisodeView extends React.Component {
                     color={this.state.isEpisodeLoading ? 'gray' : 'black'}
                     disabled={this.state.isEpisodeLoading}
                     disabledStyle={{ backgroundColor: 'rgba(0,0,0,0)' }}
+                />
+                <Slider
+                    animationType='timing'
+                    value={this.state.currentPositionMillis}
+                    minimumValue={0}
+                    maximumValue={(() => moment.duration(this.episode.EpisodeDuration).asMilliseconds())()}
+                    style={{width: '80%', marginTop: 10}}
+                    thumbStyle={{ backgroundColor: '#00356B'}}
+                    onSlidingStart={async () => await this.soundObject.pauseAsync()}
+                    onValueChange={async (value) => {
+                        await this.soundObject.setPositionAsync(value);
+                        await this.setState({
+                            currentPositionMillis: value
+                        });
+                    }}
+                    onSlidingComplete={async () => {
+                        await this.soundObject.playFromPositionAsync(this.state.currentPositionMillis);
+                    }}
                 />
             </View>
         );
@@ -101,7 +121,17 @@ class EpisodeView extends React.Component {
             await this.soundObject.setOnPlaybackStatusUpdate(playbackStatus => {
                 if (me.state.isEpisodePlaying) {
                     me.setState({
-                        positionMillis: playbackStatus.positionMillis
+                        currentPositionMillis: playbackStatus.positionMillis
+                    });
+                }
+                if (playbackStatus.didJustFinish) {
+                    this.soundObject.setStatusAsync({
+                        shouldPlay: false,
+                        positionMillis: 0
+                    });
+                    me.setState({
+                        isEpisodePlaying: false,
+                        currentPositionMillis: 0
                     });
                 }
             });
@@ -120,7 +150,7 @@ class EpisodeView extends React.Component {
 
     }
 
-    renderOverlay() {
+    _renderOverlay() {
         return (
             <Overlay 
                 overlayBackgroundColor='rgba(255, 255, 255, 0.5)'
