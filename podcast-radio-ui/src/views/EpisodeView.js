@@ -75,7 +75,7 @@ class EpisodeView extends React.Component {
                         });
                     }}
                     onSlidingComplete={async () => {
-                        await this.soundObject.playFromPositionAsync(this.state.currentPositionMillis);
+                        if (this.state.isEpisodePlaying) await this.soundObject.playFromPositionAsync(this.state.currentPositionMillis);
                     }}
                 />
             </View>
