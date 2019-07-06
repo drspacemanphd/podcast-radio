@@ -2,15 +2,19 @@ import React from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import PodcastListView from './views/PodcastListView';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
-import views from './config/Navigation';
+import views from './navigation/NavigationConfiguration';
 import { Storage, API } from 'aws-amplify';
+import createAudioObject from './audio/AudioObjectFactory';
 
 class Home extends React.Component {
     constructor(props) {
         super(props);
+        this.audioObject = null;
+        this.handleCurrentEpisodeChange = this.handleCurrentEpisodeChange.bind(this);
         this.state = {
             podcasts: [],
-            hasLoaded: false
+            hasLoaded: false,
+            currentEpisode: {}
         }
     }
 
@@ -25,42 +29,30 @@ class Home extends React.Component {
         }
     }
 
-    componentDidMount() {
-        API.get("PodcastAPI", "/podcast/all")
-            .then(result => {
-
-                let podcasts = result.payload;
-
-                return new Promise((resolve, reject) => {
-                    let signedUrls = [];
-                    podcasts.forEach(p => signedUrls.push(Storage.get(p.PodcastImageKey)));
-
-                    Promise.all(signedUrls)
-                        .then(urls => {
-                            for (let i = 0; i < urls.length; i++) {
-                                podcasts[i].ImageUrl = urls[i];
-                            }
-                            resolve(podcasts);
-                        })
-                        .catch(err => {
-                            console.log(`ERROR WHEN GETTING TEMP URLS`);
-                            console.log(`ERROR DUE TO ${err}`);                            
-                            reject(err);
-                        })
-                });
-
-            })
-            .then(podcasts => {
-                this.setState({
-                    podcasts: podcasts,
-                    hasLoaded: true
-                });
-            })
-            .catch(err => {
-                console.log(`ERROR WHEN GETTING PODCASTS`);
-                console.log(`ERROR DUE TO ${err}`);  
+    async componentDidMount() {
+        try {
+            let podcasts;
+            await Promise.all([
+                (async () => { podcasts = await this._getPodcasts(); })(),
+                (async () => { this.audioObject = await createAudioObject(); })()
+            ]);
+            this.setState({
+                podcasts: podcasts,
+                hasLoaded: true
             });
+        } catch (err) {
+            console.log(`ERROR WHEN GETTING PODCASTS`);
+            console.log(`ERROR DUE TO ${err}`);
+        }
+    }
 
+    handleCurrentEpisodeChange(podcastId, episodeId) {
+        this.setState({
+            currentEpisode: {
+                podcastId: podcastId,
+                episodeId: episodeId
+            }
+        });
     }
 
     render() {
@@ -69,11 +61,38 @@ class Home extends React.Component {
         } else {
             return (
                 <View style={styles.container}>
-                    <PodcastListView podcasts={this.state.podcasts} navigation={this.props.navigation} />
+                    <PodcastListView 
+                        audioObject={this.audioObject}
+                        podcasts={this.state.podcasts}
+                        navigation={this.props.navigation}
+                        currentEpisode={this.state.currentEpisode}
+                        handleCurrentEpisodeChange={this.handleCurrentEpisodeChange}
+                    />
                 </View>
             );
         }
     }
+
+    async _getPodcasts() {
+        try {
+            let signedUrls = [];
+            let apiResult = await API.get("PodcastAPI", "/podcast/all");
+            let podcasts = apiResult.payload;
+
+            podcasts.forEach(p => signedUrls.push(Storage.get(p.PodcastImageKey)));
+            let urls = await Promise.all(signedUrls);
+
+            for (let i = 0; i < urls.length; i++) {
+                podcasts[i].ImageUrl = urls[i];
+            }
+
+            return podcasts;
+        } catch (err) {
+            console.log(`ERROR WHEN GETTING PODCASTS`);
+            console.log(`ERROR DUE TO ${err}`);  
+        }
+    }
+
 }
 
 const styles = StyleSheet.create({

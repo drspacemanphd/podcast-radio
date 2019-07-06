@@ -23,7 +23,10 @@ export default class PodcastListView extends React.Component {
                                     }}
                                     onPress={() => {
                                         this.props.navigation.navigate('PodcastView', {
-                                            podcast: p
+                                            podcast: p,
+                                            audioObject: this.props.audioObject,
+                                            currentEpisode: this.props.currentEpisode,
+                                            handleCurrentEpisodeChange: this.props.handleCurrentEpisodeChange
                                         });
                                     }}
                                     containerStyle={styles.item}

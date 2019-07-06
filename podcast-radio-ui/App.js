@@ -1,5 +1,5 @@
 import React from 'react';
-import Home from './src/Home';
+import ReduxWrapper from './src/ReduxWrapper';
 import Amplify from 'aws-amplify';
 import { withAuthenticator, ForgotPassword, SignUp, ConfirmSignUp, RequireNewPassword } from 'aws-amplify-react-native';
 import { I18n } from 'aws-amplify';
@@ -51,7 +51,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <Home />
+      <ReduxWrapper />
     );
   }
 

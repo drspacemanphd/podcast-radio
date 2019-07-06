@@ -10,7 +10,8 @@ export default class PodcastView extends React.Component {
         this.podcast = this.props.navigation.getParam('podcast');
         this.state = {
             episodes: [],
-            hasLoaded: false
+            hasLoaded: false,
+            currentEpisode: {}
         }
     }
 
@@ -28,18 +29,18 @@ export default class PodcastView extends React.Component {
         }
     }
 
-    componentDidMount() {
-        API.get('PodcastAPI', '/podcast/' + this.podcast.PodcastName + '/episodes')
-            .then(result => {
-                this.setState({
-                    episodes: result.payload,
-                    hasLoaded: true
-                });
-            })
-            .catch(err => {
-                console.log(`ERROR WHEN GETTING ${this.podcast.PodcastName} EPISODES`);
-                console.log(`ERROR DUE TO ${err}`);
+    async componentDidMount() {
+        try {
+            let episodesApiResult = await API.get('PodcastAPI', '/podcast/' + this.podcast.PodcastName + '/episodes');
+            this.setState({
+                episodes: episodesApiResult.payload,
+                hasLoaded: true,
+                currentEpisode: this.props.navigation.getParam('currentEpisode')
             });
+        } catch(err) {
+            console.log(`ERROR WHEN GETTING ${this.podcast.PodcastName} EPISODES`);
+            console.log(`ERROR DUE TO ${err}`);
+        };
     }
 
     render() {
@@ -60,8 +61,11 @@ export default class PodcastView extends React.Component {
                                     onPress={() => {
                                         this.props.navigation.navigate('EpisodeView', {
                                             episode: e,
-                                            podcast: this.podcast
-                                        })
+                                            podcast: this.podcast,
+                                            audioObject: this.props.navigation.getParam('audioObject'),
+                                            currentEpisode: this.state.currentEpisode,
+                                            handleCurrentEpisodeChange: this.props.navigation.getParam('handleCurrentEpisodeChange')
+                                        });
                                     }}
                                     containerStyle={styles.item}
                                 />
