@@ -1,3 +1,6 @@
 **/node_modules/
 .vscode/
 **/*.zip
+**/.terraform
+**/.terraform.*
+**/terraform.*
