@@ -7,7 +7,7 @@ resource "aws_cloudwatch_log_group" "crooked_media_scraper_log_group" {
 
 resource "aws_cloudwatch_event_rule" "crooked_media_scheduler" {
     name = "${var.function_name}-poller"
-    schedule_expression = "cron(*/5 * * * ? *)"
+    schedule_expression = "cron(0 * * * ? *)"
 }
 
 resource "aws_cloudwatch_event_target" "crooked_media_scheduler_target" {

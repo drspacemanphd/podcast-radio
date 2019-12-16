@@ -1,39 +1,58 @@
 const rssParser = require('./PodcastEpisodeRssParser');
-const newEpisodeFilter = require('common-config/src/scraping-components/NewPodcastEpisodeFilter');
-const podcastEpisodeDao = require('common-config/src/scraping-components/PodcastEpisodeDao');
+const dao = require('common-config/src/scraping/PodcastDBDao');
+const podcastCreator = require('common-config/src/scraping/PodcastCreator');
+const filter = require('common-config/src/scraping/NewEpisodeFilter');
 
-/**
- * 
- * @param { podcastName (String), tableName(String), rssUrl(String), retrievalWindowInDays(Number), startIndex(Number), bucketName(string)} params
- */
-const scrapePodcastForNewEpisodes = (params) => {
+const scrape = async (params) => {
 
-    return new Promise((resolve, reject) => {
-        
-        let latestRssEntry = rssParser.parse(params);
-        let latestEpisodesFromDB = podcastEpisodeDao.getLatestEpisodesFromDB(params);
+    try {
 
-        Promise.all([latestRssEntry, latestEpisodesFromDB])
-            .then(values => newEpisodeFilter.filter(values[0], values[1].Items))
-            .then(rssEntry => {
-                if (rssEntry) return podcastEpisodeDao.saveNewEpisode(rssEntry, params);
-                else {
-                    console.log(`***** NO NEW EPISODES OF ${params.podcastName} *****`);
-                    resolve(null);
-                }
-            })
-            .then(episode => {
-                resolve(episode);
-            })
-            .catch((err) => {
-                console.error(`***** SCRAPE OF ${params.podcastName} FAILED *****`);
-                reject(err);
-            });
+        // Get podcast entry, latest entries from DB, and latest entries from RSS
+        let asyncResults = await Promise.all(
+            [
+                dao.getPodcast(params.podcastTitle, params.podcastAuthor),
+                rssParser.getRssFeed(params.rssUrl, params.lookback),
+                dao.getEpisodes(params.podcastTitle, params.lookback),
+            ]
+        );
 
-    });
+        let podcast = asyncResults[0][0];
+        let rssFeed = asyncResults[1];
+        let savedEpisodes = asyncResults[2];
+
+        let podcastRef;
+
+        // If new podcast, run process to save image in S3 and entry in DB
+        if (!podcast) {
+            console.log(`***** CREATING PODCAST ${params.podcastTitle} By ${params.podcastAuthor} *****`);
+            podcast = await podcastCreator.createPodcast(rssFeed, params.dnsName);
+            podcastRef = { title: podcast.title, category: podcast.category };
+        } else {
+            podcastRef = { title: podcast.TITLE.S, category: podcast.CATEGORY.S };
+        }
+
+        let savedEpisodeIds = savedEpisodes.map(e => e.GUID.S);
+
+        // Filter for new episodes
+        let newEpisodes = filter.filter(rssFeed.entries, savedEpisodeIds);
+
+        // Save episode mp3's and db entries
+        let savedEpsiodes = [];
+        newEpisodes.forEach(e => savedEpisodes.push(podcastCreator.createEpisode(podcastRef, e, params.dnsName)));
+        await Promise.all(savedEpisodes);
+
+        console.log(`***** SAVED ${newEpisodes.length} EPISODES OF ${podcastRef.title} *****`)
+
+        return newEpisodes;
+
+    } catch (err) {
+        console.error(`***** FAILED TO SCRAPE ${params.podcastTitle} By ${params.podcastAuthor} *****`);
+        console.error(`***** ERROR DUE TO: ${err} *****`);
+        throw err;
+    }
 
 }
 
 module.exports = {
-    scrape: scrapePodcastForNewEpisodes
+    scrape
 }

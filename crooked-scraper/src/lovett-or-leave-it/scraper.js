@@ -3,13 +3,11 @@ const scraper = require('../scraping-components/PodcastScraper');
 const scrape = async () => {
 
     let params = {
-        podcastName: process.env.LOVETT_OR_LEAVE_IT_NAME,
-        tableName: process.env.EPISODE_TABLE_NAME,
+        podcastTitle: process.env.LOVETT_OR_LEAVE_IT_TITLE,
+        podcastAuthor: process.env.AUTHOR,
+        dnsName: process.env.LOVETT_OR_LEAVE_IT_DNS,
         rssUrl: process.env.LOVETT_OR_LEAVE_IT_RSS_URL,
-        retrievalWindowInDays: 600,
-        startIndex: 0,
-        bucketName: process.env.S3_BUCKET,
-        keyPrefix: process.env.LOVETT_OR_LEAVE_IT_KEY_PREFIX
+        lookback: 3,
     }
 
     let result = await scraper.scrape(params);

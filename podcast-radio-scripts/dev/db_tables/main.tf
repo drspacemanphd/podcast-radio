@@ -1,10 +1,15 @@
 resource "aws_dynamodb_table" "episode_table" {
     name = "EPISODE_DEV"
     billing_mode = "PROVISIONED"
-    hash_key = "TITLE"
+    hash_key = "GUID"
     range_key = "PODCAST"
     read_capacity = 10
     write_capacity = 10
+
+    attribute {
+        name = "GUID"
+        type = "S"
+    }
 
     attribute {
         name = "TITLE"
@@ -31,6 +36,15 @@ resource "aws_dynamodb_table" "episode_table" {
         type = "S"
     }
 
+    global_secondary_index {
+        name = "TITLE_INDEX"
+        hash_key = "TITLE"
+        range_key = "PODCAST"
+        read_capacity = 10
+        write_capacity = 10
+        projection_type = "ALL"
+    }
+    
     global_secondary_index {
         name = "PODCAST_INDEX"
         hash_key = "PODCAST"

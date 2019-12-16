@@ -5,7 +5,12 @@ const nprPolitics = require('./src/npr-politics/scraper');
 
 const handler = async (event, context, callback) => {
     if (!process.env.NODE_ENV) throw new Error("***** NO ENVIRONMENT SPECIFIED ****");
-    let results = await Promise.all([freshAir.scrape(), nprPolitics.scrape()]);
+    let results = await Promise.all(
+        [
+            freshAir.scrape(), 
+            nprPolitics.scrape()
+        ]
+    );
     return {
         statusCode: 200,
         body: {
