@@ -5,7 +5,12 @@ const Caliphate = require('./src/caliphate/scraper');
 
 const handler = async (event, context, callback) => {
     if (!process.env.NODE_ENV) throw new Error("***** NO ENVIRONMENT SPECIFIED ****");
-    let results = await Promise.all([TheDaily.scrape(), Caliphate.scrape()]);
+    let results = await Promise.all(
+        [
+            TheDaily.scrape(), 
+            Caliphate.scrape()
+        ]
+    );
     return {
         statusCode: 200,
         body: {
@@ -15,4 +20,5 @@ const handler = async (event, context, callback) => {
     }
 };
 
+handler();
 exports.handler = handler;
