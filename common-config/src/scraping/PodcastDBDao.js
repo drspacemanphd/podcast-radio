@@ -43,9 +43,9 @@ const getEpisodes = (podcastTitle, lookback) => {
                 ':p': { 'S': podcastTitle }
             },
             TableName: process.env.EPISODE_TABLE,
-            IndexName: 'PODCAST_INDEX',
+            IndexName: 'PUBLICATION_INDEX',
             KeyConditionExpression: 'PODCAST = :p',
-            ScanIndexForward: true,
+            ScanIndexForward: false,
             Limit: lookback
         }
 

@@ -101,8 +101,8 @@ resource "aws_dynamodb_table" "podcast_table" {
 
     global_secondary_index {
         name = "CATEGORY_INDEX"
-        hash_key = "TITLE"
-        range_key = "CATEGORY"
+        hash_key = "CATEGORY"
+        range_key = "TITLE"
         read_capacity = 10
         write_capacity = 10
         projection_type = "ALL"
