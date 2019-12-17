@@ -1,24 +1,19 @@
 const aws = require('aws-sdk');
-aws.config.update({ region: 'us-east-1' });
-
-const db = new aws.DynamoDB.DocumentClient({
-    apiVersion: '2012-08-10'
-});
+aws.config.update({ region: process.env.DYNAMO_DB_REGION });
+const db = new aws.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
 
 const getPodcasts = () => {
 
     return new Promise((resolve, reject) => {
 
         const params = {
-            TableName: process.env.PODCAST_TABLE_NAME,
-            IndexName: 'PODCAST_DOWNLOADS',
-            ProjectionExpression: 'PodcastName, PodcastAuthor, PodcastCategory, PodcastDownloads, PodcastBucket, PodcastImageKey'
+            TableName: process.env.PODCAST_TABLE,
         }
 
         db.scan(params, (err, result) => {
             if (err) {
-                console.log('***** ERROR RETRIEVING ALL PODCASTS *****');
-                console.log('***** ERROR DUE TO: ' + err);
+                console.log(`***** ERROR RETRIEVING ALL PODCASTS *****`);
+                console.log(`***** ERROR DUE TO: ${err}`);
                 reject(err);
             } else {
                 resolve(result.Items);
@@ -34,19 +29,18 @@ const getPodcastsByCategory = (category) => {
     return new Promise((resolve, reject) => {
 
         const params = {
-            TableName: process.env.PODCAST_TABLE_NAME,
+            TableName: process.env.PODCAST_TABLE,
             ExpressionAttributeValues: {
                 ':c': category
             },
-            KeyConditionExpression: 'PodcastCategory = :c',
-            IndexName: 'CATEGORY_DOWNLOADS',
-            ProjectionExpression: 'PodcastName, PodcastAuthor, PodcastCategory, PodcastDownloads, PodcastBucket, PodcastImageKey'
+            KeyConditionExpression: 'CATEGORY = :c',
+            IndexName: 'CATEGORY_INDEX',
         }
 
         db.query(params, (err, result) => {
             if (err) {
-                console.log('***** ERROR RETRIEVING ALL PODCASTS WITH CATEGORY ' + category + ' *****');
-                console.log('***** ERROR DUE TO: ' + err);
+                console.log(`***** ERROR RETRIEVING ALL PODCASTS OF CATEGORY ${category} *****`);
+                console.log(`***** ERROR DUE TO: ${err}`);
                 reject(err);
             } else {
                 resolve(result.Items);
@@ -57,25 +51,24 @@ const getPodcastsByCategory = (category) => {
 
 }
 
-const getEpisodesByPodcastName = (PodcastName) => {
+const getEpisodesByPodcastName = (podcast) => {
 
     return new Promise((resolve, reject) => {
         
         const params = {
-            TableName: process.env.EPISODE_TABLE_NAME,
+            TableName: process.env.EPISODE_TABLE,
             ExpressionAttributeValues: {
-                ':p' : PodcastName
+                ':p': podcast
             },
-            KeyConditionExpression: 'EpisodePodcast = :p',
-            IndexName: 'EPISODE_PUBLICATION_DATE',
-            ProjectionExpression: 'EpisodeId, EpisodePodcast, EpisodeDownloads, EpisodeS3Bucket, EpisodeS3Key, EpisodePublicationDate, EpisodeTitle, EpisodeDuration',
+            KeyConditionExpression: 'PODCAST = :p',
+            IndexName: 'PUBLICATION_INDEX',
             ScanIndexForward: false
         }
 
         db.query(params, (err, result) => {
             if (err) {
-                console.log('***** ERROR RETRIEVING ALL EPISODES OF PODCAST ' + PodcastName + ' *****');
-                console.log('***** ERROR DUE TO: ' + err);
+                console.log(`***** ERROR RETRIEVING ALL EPISODES OF PODCAST ${podcast} *****`);
+                console.log(`***** ERROR DUE TO: ${err}`);
                 reject(err);
             } else {
                 resolve(result.Items);
@@ -85,7 +78,7 @@ const getEpisodesByPodcastName = (PodcastName) => {
 }
 
 module.exports = {
-    getPodcasts: getPodcasts,
-    getPodcastsByCategory: getPodcastsByCategory,
-    getEpisodesByPodcastName: getEpisodesByPodcastName
+    getPodcasts,
+    getPodcastsByCategory,
+    getEpisodesByPodcastName
 }

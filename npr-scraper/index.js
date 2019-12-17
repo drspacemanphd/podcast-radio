@@ -8,7 +8,7 @@ const handler = async (event, context, callback) => {
     let results = await Promise.all(
         [
             freshAir.scrape(), 
-            nprPolitics.scrape()
+            // nprPolitics.scrape()
         ]
     );
     return {

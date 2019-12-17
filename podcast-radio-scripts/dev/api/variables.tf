@@ -2,7 +2,11 @@ variable "function_name" {
     type = string
 }
 
-variable "bucket_name" {
+variable "api_name" {
+    type = string
+}
+
+variable "stage_name" {
     type = string
 }
 
@@ -11,10 +15,6 @@ variable "podcast_table_arn" {
 }
 
 variable "episode_table_arn" {
-    type = string
-}
-
-variable "s3_arn" {
     type = string
 }
 

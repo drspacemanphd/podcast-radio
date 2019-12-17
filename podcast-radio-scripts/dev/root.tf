@@ -24,6 +24,7 @@ module "crooked-media-scraper" {
     bucket_name = "${module.application_bucket.bucket_name}"
     podcast_table_arn = "${module.db_tables.podcast_table_arn}"
     episode_table_arn = "${module.db_tables.episode_table_arn}"
+    s3_arn = "${module.application_bucket.arn}"
     tags = {
         environment = "dev"
         application_name = "podcast-radio-mobile"
@@ -36,6 +37,7 @@ module "npr-scraper" {
     bucket_name = "${module.application_bucket.bucket_name}"
     podcast_table_arn = "${module.db_tables.podcast_table_arn}"
     episode_table_arn = "${module.db_tables.episode_table_arn}"
+    s3_arn = "${module.application_bucket.arn}"
     tags = {
         environment = "dev"
         application_name = "podcast-radio-mobile"
@@ -48,6 +50,20 @@ module "nyt-scraper" {
     bucket_name = "${module.application_bucket.bucket_name}"
     podcast_table_arn = "${module.db_tables.podcast_table_arn}"
     episode_table_arn = "${module.db_tables.episode_table_arn}"
+    s3_arn = "${module.application_bucket.arn}"
+    tags = {
+        environment = "dev"
+        application_name = "podcast-radio-mobile"
+    }
+}
+
+module "podcast_api" {
+    source  = "./api"
+    function_name = "podcast-api-DEV"
+    podcast_table_arn = "${module.db_tables.podcast_table_arn}"
+    episode_table_arn = "${module.db_tables.episode_table_arn}"
+    api_name = "podcast-api-DEV"
+    stage_name = "dev"
     tags = {
         environment = "dev"
         application_name = "podcast-radio-mobile"

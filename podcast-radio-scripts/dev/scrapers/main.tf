@@ -69,8 +69,8 @@ resource "aws_iam_role_policy_attachment" "scraper_cloudwatch_policy_attachment"
     policy_arn = "${aws_iam_policy.scraper_cloudwatch_policy.arn}"
 }
 
-resource "aws_iam_policy" "scraper_dynamodb_podcast_policy" {
-    name = "${var.function_name}_dynamodb_podcast_policy"
+resource "aws_iam_policy" "scraper_dynamodb_policy" {
+    name = "${var.function_name}_dynamodb_policy"
     policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -79,7 +79,12 @@ resource "aws_iam_policy" "scraper_dynamodb_podcast_policy" {
       "Action": [
           "dynamodb:*"
       ],
-      "Resource": "${var.podcast_table_arn}",
+      "Resource": [
+        "${var.podcast_table_arn}",
+        "${var.episode_table_arn}",
+        "${var.podcast_table_arn}/index/*",
+        "${var.episode_table_arn}/index/*"
+      ],
       "Effect": "Allow"
     }
   ]
@@ -87,22 +92,22 @@ resource "aws_iam_policy" "scraper_dynamodb_podcast_policy" {
 EOF
 }
 
-resource "aws_iam_role_policy_attachment" "scraper_dynamodb_podcast_policy_attachment" {
+resource "aws_iam_role_policy_attachment" "scraper_dynamodb_policy_attachment" {
     role = "${aws_iam_role.scraper_iam_role.name}"
-    policy_arn = "${aws_iam_policy.scraper_dynamodb_podcast_policy.arn}"
+    policy_arn = "${aws_iam_policy.scraper_dynamodb_policy.arn}"
 }
 
-resource "aws_iam_policy" "scraper_dynamodb_episode_policy" {
-    name = "${var.function_name}_dynamodb_episode_policy"
+resource "aws_iam_policy" "s3_policy" {
+    name = "${var.function_name}_s3_policy"
     policy = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
     {
       "Action": [
-          "dynamodb:*"
+          "s3:*"
       ],
-      "Resource": "${var.episode_table_arn}",
+      "Resource": "${var.s3_arn}/*",
       "Effect": "Allow"
     }
   ]
@@ -110,9 +115,9 @@ resource "aws_iam_policy" "scraper_dynamodb_episode_policy" {
 EOF
 }
 
-resource "aws_iam_role_policy_attachment" "scraper_dynamodb_episode_policy_attachment" {
+resource "aws_iam_role_policy_attachment" "s3_policy_attachment" {
     role = "${aws_iam_role.scraper_iam_role.name}"
-    policy_arn = "${aws_iam_policy.scraper_dynamodb_episode_policy.arn}"
+    policy_arn = "${aws_iam_policy.s3_policy.arn}"
 }
 
 resource "aws_lambda_function" "scraper" {
@@ -121,5 +126,7 @@ resource "aws_lambda_function" "scraper" {
     role          = "${aws_iam_role.scraper_iam_role.arn}"
     handler       = "index.handler"
     runtime       = "nodejs8.10"
+    timeout       = 180
+    memory_size   = 512
     tags          = var.tags
 }
