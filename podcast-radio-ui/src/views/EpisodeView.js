@@ -62,11 +62,12 @@ class EpisodeView extends React.Component {
                 />
                 <Slider
                     animationType='timing'
+                    disabled={!this._isEpisodeAlreadyLoaded()}
                     value={this.state.currentPositionMillis}
                     minimumValue={0}
                     maximumValue={(() => moment.duration(this.episode.DURATION).asMilliseconds())()}
                     style={{width: '80%', marginTop: 10}}
-                    thumbStyle={{ backgroundColor: '#00356B'}}
+                    thumbStyle={this._isEpisodeAlreadyLoaded() ? { backgroundColor: '#00356B' } : { backgroundColor: 'rgba(100,100,100,1)' }}
                     onSlidingStart={async () => await this.soundObject.pauseAsync()}
                     onValueChange={async (value) => {
                         await this.soundObject.setPositionAsync(value);
@@ -83,8 +84,8 @@ class EpisodeView extends React.Component {
     }
 
     _isEpisodeAlreadyLoaded() {
-        return this.podcast.PodcastName === this.props.currentPodcastId &&
-            this.episode.EpisodeId === this.props.currentEpisodeId;
+        return this.podcast.TITLE === this.props.currentPodcastTitle &&
+            this.episode.GUID === this.props.currentEpisodeId;
     }
 
     async _loadCurrentEpisodeState() {
