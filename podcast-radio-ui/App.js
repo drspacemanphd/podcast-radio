@@ -11,15 +11,15 @@ Amplify.configure(
   {
     Auth: {
       region: 'us-east-1',
-      userPoolId: 'us-east-1_sBg9MvsjQ',
-      userPoolWebClientId: '1ib0je127c4ed6ma28qqkab32n',
-      identityPoolId: 'us-east-1:021c740d-ffd5-4d98-8331-3a83c1ff7068',
+      userPoolId: 'us-east-1_jkr89EX04',
+      userPoolWebClientId: '3f39qcv9s1c0o306rbe7b2pqtt',
+      identityPoolId: 'us-east-1:3aa23f3e-e79e-4c8c-8614-7280beae7fed',
     },
     API: {
       endpoints: [
         {
-          name: "PodcastAPI",
-          endpoint: "https://yi4qw8i0fe.execute-api.us-east-1.amazonaws.com/dev"
+          name: "podcast-api-DEV",
+          endpoint: "https://ot6mjx8llf.execute-api.us-east-1.amazonaws.com/dev"
         }
       ]
     },
@@ -28,7 +28,7 @@ Amplify.configure(
     },
     Storage: {
       AWSS3: {
-        bucket: 'podcast-radio-dev',
+        bucket: 'podcast-radio-mobile-dev',
         region: 'us-east-1'
       }
     }

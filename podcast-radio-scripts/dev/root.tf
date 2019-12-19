@@ -69,3 +69,28 @@ module "podcast_api" {
         application_name = "podcast-radio-mobile"
     }
 }
+
+module "cognito_pool" {
+    source  = "./cognito"
+    user_pool_name = "podcast-radio-mobile-DEV"
+    tags = {
+        environment = "dev"
+        application_name = "podcast-radio-mobile"
+    }
+}
+
+output "aws_cognito_user_pool" {
+  value = module.cognito_pool.aws_cognito_user_pool
+}
+
+output "aws_cognito_user_pool_client" {
+  value = module.cognito_pool.aws_cognito_user_pool_client
+}
+
+output "aws_cognito_user_pool_domain" {
+  value = module.cognito_pool.aws_cognito_user_pool_domain
+}
+
+output "aws_cognito_identity_pool" {
+  value = module.cognito_pool.aws_cognito_identity_pool
+}
