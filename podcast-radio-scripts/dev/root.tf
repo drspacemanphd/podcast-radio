@@ -20,7 +20,7 @@ module "db_tables" {
 
 module "crooked-media-scraper" {
     source  = "./scrapers"
-    function_name = "crooked-media-scraper-DEV"
+    function_name = "crooked-media-scraper-DEV",
     bucket_name = "${module.application_bucket.bucket_name}"
     podcast_table_arn = "${module.db_tables.podcast_table_arn}"
     episode_table_arn = "${module.db_tables.episode_table_arn}"

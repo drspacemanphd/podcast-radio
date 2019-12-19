@@ -76,14 +76,14 @@ class Home extends React.Component {
     async _getPodcasts() {
         try {
             let signedUrls = [];
-            let apiResult = await API.get("PodcastAPI", "/podcast/all");
+            let apiResult = await API.get("podcast-api-DEV", "/podcast/all");
             let podcasts = apiResult.payload;
 
-            podcasts.forEach(p => signedUrls.push(Storage.get(p.PodcastImageKey)));
+            podcasts.forEach(p => signedUrls.push(Storage.get(p.IMAGE_KEY)));
             let urls = await Promise.all(signedUrls);
 
             for (let i = 0; i < urls.length; i++) {
-                podcasts[i].ImageUrl = urls[i];
+                podcasts[i].IMAGE_URL = urls[i];
             }
 
             return podcasts;

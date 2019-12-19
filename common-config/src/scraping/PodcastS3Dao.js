@@ -3,26 +3,26 @@ const aws = require('aws-sdk');
 aws.config.update({ region: process.env.S3_REGION });
 const s3 = new aws.S3();
 
-const savePodcastImage = (url, dns) => {
+const savePodcastImage = (url, imageKey) => {
 
     return new Promise((resolve, reject) => {
         fetch(url, { redirect: 'follow', follow: 5 })
             .then(res => res.buffer())
             .then(res => {
-                console.log(`***** BEGINNING UPLOAD IMAGE OF ${dns + '.jpg'} *****`);
+                console.log(`***** BEGINNING UPLOAD IMAGE OF ${imageKey} *****`);
                 s3.upload({
                     ACL: 'authenticated-read',
                     Bucket: process.env.S3_BUCKET,
-                    Key: dns + '/' + dns + '.jpg',
+                    Key: imageKey,
                     Body: res,
                     ContentType: 'image/jpeg'
                 }, (err, result) => {
                     if (err) {
-                        console.error(`***** FAILED TO UPLOAD IMAGE OF ${dns + '.jpg'} *****`);
+                        console.error(`***** FAILED TO UPLOAD IMAGE OF ${imageKey} *****`);
                         console.error(`***** ERROR DUE TO: ${err} *****`);
                         reject(err);
                     }
-                    console.log(`***** SUCCESSFULLY UPLOADED IMAGE: ${dns + '.jpg'} *****`);
+                    console.log(`***** SUCCESSFULLY UPLOADED IMAGE: ${imageKey} *****`);
                     resolve(result);
                 });
             });
@@ -30,26 +30,26 @@ const savePodcastImage = (url, dns) => {
 
 }
 
-const saveEpisodeMp3 = (url, dns, title) => {
+const saveEpisodeMp3 = (url, mp3Key) => {
 
     return new Promise((resolve, reject) => {
         fetch(url, { redirect: 'follow', follow: 5 })
             .then(res => res.buffer())
             .then(res => {
-                console.log(`***** BEGINNING UPLOAD OF ${dns + '/' + title + '.mp3'} *****`);
+                console.log(`***** BEGINNING UPLOAD OF ${mp3Key} *****`);
                 s3.upload({
                     ACL: 'authenticated-read',
                     Bucket: process.env.S3_BUCKET,
-                    Key: dns + '/' + title + '.mp3',
+                    Key: mp3Key,
                     Body: res,
                     ContentType: 'audio/mpeg'
                 }, (err, result) => {
                     if (err) {
-                        console.error(`***** FAILED TO SAVE EPISODE ${dns + '/' + title + '.mp3'} *****`);
+                        console.error(`***** FAILED TO SAVE EPISODE ${mp3Key} *****`);
                         console.error(`***** ERROR DUE TO: ${err} *****`);
                         reject(err);
                     }
-                    console.log(`***** SUCCESSFULLY UPLOADED EPISODE: ${dns + '/' + title + '.mp3'} *****`);
+                    console.log(`***** SUCCESSFULLY UPLOADED EPISODE: ${mp3Key} *****`);
                     resolve(result);
                 });
             });
