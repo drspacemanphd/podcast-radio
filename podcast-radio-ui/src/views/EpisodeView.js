@@ -22,7 +22,7 @@ class EpisodeView extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
         return {
-            title: navigation.getParam('episode').EpisodeTitle,
+            title: navigation.getParam('episode').TITLE,
             headerStyle: {
                 backgroundColor: '#00356B',
             },
@@ -47,10 +47,10 @@ class EpisodeView extends React.Component {
             <View style={styles.container}>
                 {this._renderOverlay()}
                 <Image
-                    source={{ uri: this.podcast.ImageUrl }}
+                    source={{ uri: this.podcast.IMAGE_URL }}
                     style={styles.image}
                 />
-                <Text style={styles.title}>{this.episode.EpisodeTitle}</Text>
+                <Text style={styles.title}>{this.episode.TITLE}</Text>
                 <Icon
                     name={this.state.isEpisodePlaying ? 'pause' : 'play'}
                     type='font-awesome'
@@ -62,11 +62,12 @@ class EpisodeView extends React.Component {
                 />
                 <Slider
                     animationType='timing'
+                    disabled={!this._isEpisodeAlreadyLoaded()}
                     value={this.state.currentPositionMillis}
                     minimumValue={0}
-                    maximumValue={(() => moment.duration(this.episode.EpisodeDuration).asMilliseconds())()}
+                    maximumValue={(() => moment.duration(this.episode.DURATION).asMilliseconds())()}
                     style={{width: '80%', marginTop: 10}}
-                    thumbStyle={{ backgroundColor: '#00356B'}}
+                    thumbStyle={this._isEpisodeAlreadyLoaded() ? { backgroundColor: '#00356B' } : { backgroundColor: 'rgba(100,100,100,1)' }}
                     onSlidingStart={async () => await this.soundObject.pauseAsync()}
                     onValueChange={async (value) => {
                         await this.soundObject.setPositionAsync(value);
@@ -83,8 +84,8 @@ class EpisodeView extends React.Component {
     }
 
     _isEpisodeAlreadyLoaded() {
-        return this.podcast.PodcastName === this.props.currentPodcastId &&
-            this.episode.EpisodeId === this.props.currentEpisodeId;
+        return this.podcast.TITLE === this.props.currentPodcastTitle &&
+            this.episode.GUID === this.props.currentEpisodeId;
     }
 
     async _loadCurrentEpisodeState() {
@@ -111,7 +112,7 @@ class EpisodeView extends React.Component {
             if (isLoaded) await this.soundObject.stopAsync();
             if (isLoaded) await this.soundObject.unloadAsync();
 
-            let episodeUrl = await Storage.get(this.episode.EpisodeS3Key);
+            let episodeUrl = await Storage.get(this.episode.MP3_KEY);
 
             await this.soundObject.loadAsync(
                 { uri: episodeUrl },
@@ -164,7 +165,7 @@ class EpisodeView extends React.Component {
 
     async _togglePlay() {
         if (!this._isEpisodeAlreadyLoaded()) {
-            this.props.updateCurrentEpisode(this.podcast.PodcastName, this.episode.EpisodeId);
+            this.props.updateCurrentEpisode(this.podcast.TITLE, this.episode.GUID);
             await this.setState({
                 isEpisodeLoading: true,
                 isEpisodePlaying: false,
@@ -180,7 +181,7 @@ class EpisodeView extends React.Component {
                     });
                 })
                 .catch(err => {
-                    console.log(`ERROR OCCURRED WHEN PLAYING ${this.episode.EpisodeTitle}`);
+                    console.log(`ERROR OCCURRED WHEN PLAYING ${this.episode.TITLE}`);
                     console.log(`ERROR DUE TO: ${err}`);
                 });
         } else {
@@ -191,7 +192,7 @@ class EpisodeView extends React.Component {
                     });
                 })
                 .catch(err => {
-                    console.log(`ERROR OCCURRED WHEN PAUSING ${this.episode.EpisodeTitle}`);
+                    console.log(`ERROR OCCURRED WHEN PAUSING ${this.episode.TITLE}`);
                     console.log(`ERROR DUE TO: ${err}`);
                 });
         }
@@ -201,13 +202,13 @@ class EpisodeView extends React.Component {
 
 const mapDispatchToProps = dispatch => (
     {
-        updateCurrentEpisode: (podcastId, episodeId) => dispatch(actions.UPDATE_CURRENT_EPISODE(podcastId, episodeId))
+        updateCurrentEpisode: (podcastTitle, episodeId) => dispatch(actions.UPDATE_CURRENT_EPISODE(podcastTitle, episodeId))
     }
 )
 
 const mapStateToProps = state => (
     { 
-        currentPodcastId: state.CurrentEpisodeReducer.currentPodcastId,
+        currentPodcastTitle: state.CurrentEpisodeReducer.currentPodcastTitle,
         currentEpisodeId: state.CurrentEpisodeReducer.currentEpisodeId
     }
 );

@@ -1,5 +1,5 @@
 const initialState = {
-    currentPodcastId: null,
+    currentPodcastTitle: null,
     currentEpisodeId: null
 }
 
@@ -9,7 +9,7 @@ export default function(state = initialState, action) {
 
         case 'UPDATE_CURRENT_EPISODE':
             return Object.assign({}, state, {
-                currentPodcastId: action.currentPodcastId,
+                currentPodcastTitle: action.currentPodcastTitle,
                 currentEpisodeId: action.currentEpisodeId
             });
 

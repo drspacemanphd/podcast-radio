@@ -75,7 +75,8 @@ const savePodcast = (podcast) => {
                 'TITLE': { 'S': podcast.title },
                 'AUTHOR': { 'S': podcast.author },
                 'CATEGORY': { 'S': podcast.category },
-                'IMAGE_URL': { 'S': podcast.imageUrl }
+                'IMAGE_URL': { 'S': podcast.imageUrl },
+                'IMAGE_KEY': { 'S': podcast.imageKey }
             }
         }
 
@@ -112,6 +113,7 @@ const saveEpisode = (episode) => {
                 'CATEGORY': { 'S': episode.category },
                 'DOWNLOADS': { 'N': episode.downloads },
                 'URL': { 'S': episode.url },
+                'MP3_KEY': {'S' : episode.mp3Key }
             }
         }
 

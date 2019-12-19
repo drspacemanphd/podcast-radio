@@ -1,7 +1,7 @@
-export default function(podcastId, episodeId) {
+export default function (podcastTitle, episodeId) {
     return {
         type: 'UPDATE_CURRENT_EPISODE',
-        currentPodcastId: podcastId,
+        currentPodcastTitle: podcastTitle,
         currentEpisodeId: episodeId
     }
 }

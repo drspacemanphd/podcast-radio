@@ -17,7 +17,7 @@ export default class PodcastView extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
         return {
-            title: navigation.getParam('podcast').PodcastName,
+            title: navigation.getParam('podcast').TITLE,
             headerStyle: {
                 backgroundColor: '#00356B',
             },
@@ -31,7 +31,7 @@ export default class PodcastView extends React.Component {
 
     async componentDidMount() {
         try {
-            let episodesApiResult = await API.get('PodcastAPI', '/podcast/' + this.podcast.PodcastName + '/episodes');
+            let episodesApiResult = await API.get('podcast-api-DEV', '/podcast/' + this.podcast.TITLE + '/episodes');
             this.setState({
                 episodes: episodesApiResult.payload,
                 hasLoaded: true,
@@ -55,9 +55,9 @@ export default class PodcastView extends React.Component {
                             return (
                                 <ListItem
                                     key={i}
-                                    title={e.EpisodeTitle}
-                                    subtitle={e.EpisodePublicationDate}
-                                    leftAvatar={{ source: { uri: this.podcast.ImageUrl } }}
+                                    title={e.TITLE}
+                                    subtitle={e.PUBLICATION_DATE}
+                                    leftAvatar={{ source: { uri: this.podcast.IMAGE_URL } }}
                                     onPress={() => {
                                         this.props.navigation.navigate('EpisodeView', {
                                             episode: e,
