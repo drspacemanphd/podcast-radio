@@ -1,43 +1,28 @@
-const aws = require('aws-sdk');
-aws.config.update({region: process.env.DYNAMO_DB_REGION});
-const db = new aws.DynamoDB();
+const db = require('../aws/awsconfig').db;
 
-const getPodcast = (podcastTitle, podcastAuthor) => {
+const getPodcast = async (podcastTitle, podcastAuthor) => {
 
-    return new Promise((resolve, reject) => {
-
-        console.log(`***** QUERYING FOR ${podcastTitle} PODCAST *****`);
-
+    try {
         const params = {
             ExpressionAttributeValues: {
                 ':p': { 'S': podcastTitle },
-                ':a': { 'S': podcastAuthor}
+                ':a': { 'S': podcastAuthor }
             },
             KeyConditionExpression: 'TITLE = :p AND AUTHOR = :a',
             TableName: process.env.PODCAST_TABLE
         }
-
-        db.query(params, (err, result) => {
-            if (err) {
-                console.error(`***** QUERY FOR ${podcastTitle} PODCAST FAILED *****`);
-                console.error(`***** ERROR DUE TO: ${err} *****`);
-                reject(err);
-            } else {
-                console.log(`***** SUCCESSFULLY QUERIED FOR ${podcastTitle} PODCAST *****`);
-                resolve(result.Items);
-            }
-        });
-
-    });
+        return await query(params);
+    } catch (err) {
+        console.error(`***** QUERY FOR ${podcastTitle} PODCAST FAILED *****`);
+        console.error(`***** ERROR DUE TO: ${err} *****`);
+        throw err;
+    }
 
 }
 
-const getEpisodes = (podcastTitle, lookback) => {
+const getEpisodes = async (podcastTitle, lookback) => {
 
-    return new Promise((resolve, reject) => {
-
-        console.log(`***** QUERYING FOR EPSIODES OF ${podcastTitle} *****`);
-
+    try {
         const params = {
             ExpressionAttributeValues: {
                 ':p': { 'S': podcastTitle }
@@ -49,24 +34,18 @@ const getEpisodes = (podcastTitle, lookback) => {
             Limit: lookback
         }
 
-        db.query(params, (err, result) => {
-            if (err) {
-                console.error(`***** QUERY FOR ${podcastTitle} EPISODES FAILED *****`);
-                console.error(`***** ERROR DUE TO: ${err} *****`);
-                reject(err);
-            } else {
-                console.log(`***** SUCCESSFULLY QUERIED FOR EPISODES OF ${podcastTitle} *****`);
-                resolve(result.Items);
-            }
-        });
+        return await query(params);
+    } catch (err) {
+        console.error(`***** QUERY FOR ${podcastTitle} EPISODES FAILED *****`);
+        console.error(`***** ERROR DUE TO: ${err} *****`);
+        throw err;
+    }
 
-    });
 }
 
-const savePodcast = (podcast) => {
+const savePodcast = async (podcast) => {
     
-    return new Promise((resolve, reject) => {
-
+    try {
         console.log(`***** SAVING ${podcast.title} PODCAST *****`);
 
         const params = {
@@ -80,24 +59,20 @@ const savePodcast = (podcast) => {
             }
         }
 
-        db.putItem(params, (err, result) => {
-            if (err) {
-                console.error(`***** COULD NOT SAVE DB ENTRY FOR PODCAST ${podcast.title} *****`);
-                console.error(`***** ERROR DUE TO: ${err} *****`);
-                reject(err);
-            } else {
-                console.log(`***** SUCCESSFULLY SAVED DB ENTRY FOR PODCAST: ${podcast.title} *****`);
-                resolve(podcast);
-            }
-        });
-    });
+        await saveItem(params);
+
+        return podcast;
+    } catch (err) {
+        console.error(`***** COULD NOT SAVE DB ENTRY FOR PODCAST ${podcast.title} *****`);
+        console.error(`***** ERROR DUE TO: ${err} *****`);
+        throw err;
+    }
 
 }
 
-const saveEpisode = (episode) => {
+const saveEpisode = async (episode) => {
 
-    return new Promise((resolve, reject) => {
-
+    try {
         console.log(`***** SAVING EPISODE ${episode.title} OF PODCAST ${episode.podcast} *****`);
 
         const params = {
@@ -113,22 +88,39 @@ const saveEpisode = (episode) => {
                 'CATEGORY': { 'S': episode.category },
                 'DOWNLOADS': { 'N': episode.downloads },
                 'URL': { 'S': episode.url },
-                'MP3_KEY': {'S' : episode.mp3Key }
+                'MP3_KEY': { 'S': episode.mp3Key }
             }
         }
 
-        db.putItem(params, (err, result) => {
-            if (err) {
-                console.error(`***** COULD NOT SAVE DB ENTRY FOR EPISODE ${episode.title} OF PODCAST ${episode.podcast} *****`);
-                console.error(`***** ERROR DUE TO: ${err} *****`);
-                reject(err);
-            } else {
-                console.log(`***** SUCCESSFULLY SAVED DB ENTRY FOR EPISODE ${episode.title} OF PODCAST ${episode.podcast} *****`);
-                resolve(episode);
-            }
-        });
-    });
+        await saveItem(params);
 
+        return episode;
+    } catch (err) {
+        console.error(`***** COULD NOT SAVE DB ENTRY FOR EPISODE ${episode.title} OF PODCAST ${episode.podcast} *****`);
+        console.error(`***** ERROR DUE TO: ${err} *****`);
+        throw err;
+    }
+
+}
+
+const query = async (params) => {
+    try {
+        const result = await db.query(params).promise();
+        return result.Items
+    } catch (err) {
+        console.error(`***** ERROR WHEN QUERYING DUE TO: ${err} *****`);
+        throw err;
+    }
+}
+
+const saveItem = async (params) => {
+    try {
+        const result = await db.putItem(params).promise();
+        return result.Items
+    } catch (err) {
+        console.error(`***** ERROR WHEN SAVING DUE TO: ${err} *****`);
+        throw err;
+    }
 }
 
 module.exports = {
