@@ -4,8 +4,8 @@
   "description": "Central API for user queries for podcasts and episodes",
   "main": "index.js",
   "scripts": {
-    "start": "node ./src/App.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node local.js",
+    "test": "nyc --reporter=text mocha src/**/*.test.js"
   },
   "keywords": [
     "Podcast",
@@ -26,5 +26,12 @@
     "express": "^4.16.4",
     "moment": "^2.24.0",
     "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "mocha": "^6.2.2",
+    "nyc": "^15.0.0",
+    "sinon": "^8.0.1"
   }
 }
