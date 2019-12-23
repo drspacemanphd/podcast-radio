@@ -1,20 +1,13 @@
-const rssParser = require('./PodcastEpisodeRssParser');
-const dao = require('common-config/src/scraping/PodcastDBDao');
-const podcastCreator = require('common-config/src/scraping/PodcastCreator');
-const filter = require('common-config/src/scraping/NewEpisodeFilter');
+const dao = require('./PodcastDBDao');
+const podcastCreator = require('./PodcastCreator');
+const filter = require('./NewEpisodeFilter');
 
 const scrape = async (params) => {
 
     try {
 
         // Get podcast entry, latest entries from DB, and latest entries from RSS
-        let asyncResults = await Promise.all(
-            [
-                dao.getPodcast(params.podcastTitle, params.podcastAuthor),
-                rssParser.getRssFeed(params.rssUrl, params.lookback),
-                dao.getEpisodes(params.podcastTitle, params.lookback),
-            ]
-        );
+        let asyncResults = await getData(params);
 
         let podcast = asyncResults[0][0];
         let rssFeed = asyncResults[1];
@@ -51,6 +44,24 @@ const scrape = async (params) => {
         throw err;
     }
 
+}
+
+const getData = async (params) => {
+    try {
+        const results = await Promise.all(
+            [
+                dao.getPodcast(params.podcastTitle, params.podcastAuthor),
+                params.rssParser.getRssFeed(params.rssUrl, params.lookback),
+                dao.getEpisodes(params.podcastTitle, params.lookback),
+            ]
+        );
+
+        return results;
+    } catch (err) {
+        console.error(`***** ERROR THROWN WHEN GETTING DATA *****`);
+        console.error(`***** ERROR DUE TO: ${err} *****`);
+        throw err;
+    }
 }
 
 module.exports = {

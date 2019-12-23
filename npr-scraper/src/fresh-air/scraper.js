@@ -1,4 +1,5 @@
-const scraper = require('../scraping-components/PodcastScraper');
+const scraper = require('common-config/src/scraping/PodcastScraper');
+const rssParser = require('../scraping-components/PodcastEpisodeRssParser');
 
 const scrape = async () => {
 
@@ -7,6 +8,7 @@ const scrape = async () => {
         podcastAuthor: process.env.AUTHOR,
         dnsName: process.env.FRESH_AIR_DNS,
         rssUrl: process.env.FRESH_AIR_RSS_URL,
+        rssParser: rssParser,
         lookback: 3,
     }
 

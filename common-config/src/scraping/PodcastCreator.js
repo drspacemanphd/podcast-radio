@@ -2,7 +2,7 @@ const dbDao = require('./PodcastDBDao');
 const s3Dao = require('./PodcastS3Dao');
 
 const createPodcast = async (rssFeed, dns) => {
-    let savedImage = '';
+    let savedImage = {};
     let imageKey = `${dns}/${dns}.jpg`
 
     if (rssFeed.imageUrl) {
@@ -14,7 +14,7 @@ const createPodcast = async (rssFeed, dns) => {
         author: rssFeed.author,
         category: rssFeed.category,
         imageUrl: savedImage.Location,
-        imageKey: imageKey 
+        imageKey: savedImage.Location ? imageKey : undefined
     }
 
     let savedPodcast = await dbDao.savePodcast(entryToSave);

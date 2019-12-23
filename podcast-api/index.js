@@ -1,5 +1,5 @@
 const awsServerlessExpress = require('aws-serverless-express')
-const app = require('./src/App')
+const app = require('./src/api/api').standalone;
 const server = awsServerlessExpress.createServer(app)
 
 exports.handler = (event, context) => { awsServerlessExpress.proxy(server, event, context) }

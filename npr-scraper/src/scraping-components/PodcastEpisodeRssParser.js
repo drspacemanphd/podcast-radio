@@ -57,16 +57,14 @@ const fetchXml = async (rssUrl) => {
     }
 }
 
-const parseXml = (xml) => {
-    return new Promise((resolve, reject) => {
-        xml2js.parseString(xml, { async: true }, (err, result) => {
-            if (err) {
-                console.error(`***** PARSING XML FAILED *****`, err)
-                reject(err);
-            }
-            resolve(result);
-        });
-    });
+const parseXml = async (xml) => {
+    try {
+        return await xml2js.parseStringPromise(xml);
+    } catch (err) {
+        console.error(`***** ERROR PARSING XML *****`);
+        console.error(`***** ERROR DUE TO ${err} *****`);
+        throw err;
+    }
 }
 
 const processEntry = (rssEntry) => {
