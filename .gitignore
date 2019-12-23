@@ -5,3 +5,4 @@
 **/.terraform.*
 **/terraform.*
 **/coverage/
+**/.nyc_output
