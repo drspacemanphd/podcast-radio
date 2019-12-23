@@ -1,0 +1,8 @@
+{
+    "name": "podcast-radio-parent",
+    "version": "1.0.0",
+    "description": "Parent Package",
+    "scripts": {
+        "test": "jest --coverage"
+    }
+}
