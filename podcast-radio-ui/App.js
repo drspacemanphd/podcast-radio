@@ -1,11 +1,17 @@
 import React from 'react';
-import ReduxWrapper from './src/ReduxWrapper';
 import Amplify from 'aws-amplify';
-import { withAuthenticator, ForgotPassword, SignUp, ConfirmSignUp, RequireNewPassword } from 'aws-amplify-react-native';
+import { withAuthenticator, ForgotPassword, RequireNewPassword, AmplifyTheme } from 'aws-amplify-react-native';
 import { I18n } from 'aws-amplify';
 import CustomSignIn from './src/auth/CustomSignIn';
 import CustomSignUp from './src/auth/CustomSignUp';
 import CustomConfirmSignUp from './src/auth/CustomConfirmSignUp';
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import logger from 'redux-logger';
+import index from './src/reducers/index';
+import Home from './src/Home';
+
+const store = createStore(index, applyMiddleware(logger));
 
 Amplify.configure(
   {
@@ -51,11 +57,17 @@ class App extends React.Component {
 
   render() {
     return (
-      <ReduxWrapper />
+      <Provider store={store}>
+        <Home />
+      </Provider>
     );
   }
 
 }
+
+const customContainer = { ...AmplifyTheme.container };
+customContainer.backgroundColor = '#00356B';
+AmplifyTheme.container = customContainer;
 
 export default withAuthenticator(App, false, [
   <CustomSignIn />,
@@ -63,4 +75,4 @@ export default withAuthenticator(App, false, [
   <CustomSignUp />,
   <CustomConfirmSignUp />,
   <RequireNewPassword />
-]);
+], null, AmplifyTheme);
