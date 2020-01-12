@@ -99,6 +99,7 @@ export default class CustomSignUp extends SignUp {
                         onPress={this.signUp} 
                         disabled={!this.state || !this.state.username || !this.state.password}
                     />
+                    <Text style={{ color: 'white', marginTop: 25, fontSize: 10, textAlign: 'center' }}>Password must be at least 8 characters with at least one lowercase and uppercase letter, number, and special character</Text>
                     <Text style={{ color: 'white', marginTop: 25, fontSize: 15 }} onPress={() => {
                         this.setState({
                             ...this.initialState
