@@ -1,12 +1,11 @@
 import React from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import PodcastListView from './views/PodcastListView';
-import { createStackNavigator, createAppContainer } from 'react-navigation';
-import views from './navigation/NavigationConfiguration';
+import Header from './navigation/Header';
 import { Storage, API } from 'aws-amplify';
 import createAudioObject from './audio/AudioObjectFactory';
 
-class Home extends React.Component {
+export default class Home extends React.Component {
     constructor(props) {
         super(props);
         this.audioObject = null;
@@ -20,6 +19,7 @@ class Home extends React.Component {
 
     static navigationOptions = {
         title: 'Podcast Radio',
+        header: () => <Header />,
         headerStyle: {
             backgroundColor: '#00356B',
         },
@@ -114,15 +114,3 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
 });
-
-const appStack = () => {
-    views.Home = Home;
-    return createStackNavigator(views,
-        {
-            initialRouteName: 'Home',
-            headerLayoutPreset: 'center'
-        }
-    );
-};
-
-export default createAppContainer(appStack());
