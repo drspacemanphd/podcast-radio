@@ -1,26 +1,8 @@
-// CloudWatch Resources
+// Cloudwatch Logs
 resource "aws_cloudwatch_log_group" "scraper_log_group" {
     name = "/aws/lambda/${var.function_name}"
     retention_in_days = 7
     tags = var.tags
-}
-
-resource "aws_cloudwatch_event_rule" "scheduler" {
-    name = "${var.function_name}-poller"
-    schedule_expression = "cron(0 * * * ? *)"
-}
-
-resource "aws_cloudwatch_event_target" "scheduler_target" {
-  rule = aws_cloudwatch_event_rule.scheduler.name
-  arn = aws_lambda_function.scraper.arn
-}
-
-resource "aws_lambda_permission" "scheduler_permission" {
-    statement_id = "AllowExecutionFromCloudWatch"
-    action = "lambda:InvokeFunction"
-    function_name = "${aws_lambda_function.scraper.function_name}"
-    principal = "events.amazonaws.com"
-    source_arn = "${aws_cloudwatch_event_rule.scheduler.arn}"
 }
 
 // IAM Roles
@@ -125,7 +107,7 @@ resource "aws_lambda_function" "scraper" {
     function_name = "${var.function_name}"
     role          = "${aws_iam_role.scraper_iam_role.arn}"
     handler       = "index.handler"
-    runtime       = "nodejs8.10"
+    runtime       = "nodejs12.x"
     timeout       = 180
     memory_size   = 512
     tags          = var.tags

@@ -1,7 +1,7 @@
 {
-  "name": "crooked-scraper",
+  "name": "scraper-npr",
   "version": "1.0.0",
-  "description": "A microservice to scrape for podcasts published by Crooked Media",
+  "description": "A microservice to scrape for podcasts published using npr rss",
   "main": "index.js",
   "scripts": {
     "test": "jest --coverage"
