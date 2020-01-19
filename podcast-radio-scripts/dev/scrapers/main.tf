@@ -109,6 +109,6 @@ resource "aws_lambda_function" "scraper" {
     handler       = "index.handler"
     runtime       = "nodejs12.x"
     timeout       = 180
-    memory_size   = 512
+    memory_size   = 1024
     tags          = var.tags
 }
