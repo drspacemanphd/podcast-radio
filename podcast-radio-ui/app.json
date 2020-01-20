@@ -3,7 +3,7 @@
     "name": "Podcast Radio",
     "slug": "podcast-radio-ui",
     "privacy": "unlisted",
-    "sdkVersion": "33.0.0",
+    "sdkVersion": "35.0.0",
     "platforms": [
       "ios",
       "android",
@@ -28,7 +28,7 @@
       "bundleIdentifier": "com.markbrown.podcastradio"
     },
     "android": {
-     "package": "com.markbrown.podcastradio"
+      "package": "com.markbrown.podcastradio"
     }
   }
 }
