@@ -57,6 +57,19 @@ module "npr_scraper" {
     }
 }
 
+module "nbcnews_scraper" {
+    source  = "./scrapers"
+    function_name = "nbcnews-scraper-DEV"
+    bucket_name = "${module.application_bucket.bucket_name}"
+    podcast_table_arn = "${module.db_tables.podcast_table_arn}"
+    episode_table_arn = "${module.db_tables.episode_table_arn}"
+    s3_arn = "${module.application_bucket.arn}"
+    tags = {
+        environment = "dev"
+        application_name = "podcast-radio-mobile"
+    }
+}
+
 module "crooked_media_poller" {
     source = "./poller"
     function_name = "feedburner-scraper-DEV"
@@ -131,6 +144,28 @@ module "npr_poller" {
                     "author": "NPR",
                     "dns": "npr-politics",
                     "rssUrl": "https://www.npr.org/rss/podcast.php?id=510310"
+                }
+            ]
+        }
+    EOT
+    tags = {
+        environment = "dev"
+        application_name = "podcast-radio-mobile"
+    }
+}
+
+module "nbcnews_poller" {
+    source = "./poller"
+    function_name = "nbcnews-scraper-DEV"
+    lambda_arn = "${module.nbcnews_scraper.aws_lambda_function_arn}"
+    cloud_watch_target_input = <<EOT
+        { "podcasts": 
+            [ 
+                { 
+                    "title": "The Rachel Maddow Show", 
+                    "author": "Rachel Maddow, MSNBC",
+                    "dns": "the-rachel-maddow-show",
+                    "rssUrl": "https://podcastfeeds.nbcnews.com/msnbc-rachel-maddow"
                 }
             ]
         }

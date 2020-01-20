@@ -1,7 +1,7 @@
 {
-  "name": "scraper-npr",
+  "name": "scraper-nbcnews",
   "version": "1.0.0",
-  "description": "A microservice to scrape for podcasts published using npr rss",
+  "description": "A microservice to scrape for podcasts published using nbcnews.com rss",
   "main": "index.js",
   "scripts": {
     "test": "jest --coverage"
