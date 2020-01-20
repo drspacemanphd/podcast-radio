@@ -6,11 +6,6 @@
   "scripts": {
     "test": "jest --coverage"
   },
-  "keywords": [
-    "Crooked",
-    "Pod",
-    "Save"
-  ],
   "author": "drspacemanphd",
   "license": "ISC",
   "dependencies": {
