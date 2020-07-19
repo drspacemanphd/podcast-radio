@@ -15,7 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "aws-sdk": "^2.452.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "moment": "^2.24.0",
     "node-fetch": "^2.5.0",
     "xml2js": "^0.4.19"
