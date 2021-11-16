@@ -18,7 +18,7 @@
   "author": "drspacemanphd",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.456.0",
+    "aws-sdk": "^2.814.0",
     "aws-serverless-express": "^3.3.6",
     "common-config": "../common-config/common-config-1.0.0.tgz",
     "cookie-parser": "^1.4.4",
