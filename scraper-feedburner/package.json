@@ -9,7 +9,7 @@
   "author": "drspacemanphd",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.453.0",
+    "aws-sdk": "^2.814.0",
     "common-config": "../common-config/common-config-1.0.0.tgz",
     "dotenv-flow": "^0.4.0",
     "lodash": "^4.17.15",
