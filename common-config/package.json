@@ -14,7 +14,7 @@
   "author": "drspacemanphd",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.452.0",
+    "aws-sdk": "^2.814.0",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "node-fetch": "^2.5.0",
